@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>P. Alekhya | 3D Portfolio World V5</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#040812;color:#fff;font-family:Inter,system-ui,Arial}#scene{position:fixed;inset:0}#hud{position:fixed;inset:0;pointer-events:none}.top{position:absolute;top:15px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center}.brand{font-size:13px;font-weight:900;letter-spacing:.22em}.pill{font-size:10px;padding:9px 13px;border:1px solid #ffffff22;border-radius:999px;background:#06101bcc;backdrop-filter:blur(12px);color:#d9eaff}.hero{position:absolute;top:11%;left:50%;transform:translateX(-50%);text-align:center;text-shadow:0 8px 40px #000;transition:.4s}.hero .k{font-size:10px;letter-spacing:.35em;color:#8ee7ff}.hero h1{margin:8px 0;font-size:clamp(42px,8vw,86px);line-height:.9;letter-spacing:.06em}.hero p{margin:0;color:#b8c9df;font-size:12px;letter-spacing:.12em}.portrait{position:absolute;top:29%;left:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;object-fit:cover;border:2px solid #8be8ff88;box-shadow:0 0 50px #4adfff55}.help{position:absolute;left:18px;bottom:15px;color:#b9c7d9;font-size:10px}.status{position:absolute;right:18px;bottom:15px;font-size:10px;color:#9fe7ff}.card{pointer-events:auto;position:absolute;right:18px;bottom:45px;width:min(440px,calc(100% - 36px));padding:20px;border:1px solid #ffffff24;border-radius:20px;background:#07111ee8;backdrop-filter:blur(18px);opacity:0;transform:translateY(18px);transition:.25s;box-shadow:0 18px 60px #0008}.card.show{opacity:1;transform:none}.card h2{margin:0 0 8px;font-size:22px}.card p{font-size:13px;line-height:1.55;color:#b8c7da}.tag{display:inline-block;padding:5px 9px;margin:3px 3px 0 0;border-radius:999px;background:#ffffff0d;border:1px solid #ffffff18;font-size:10px}.btn{display:inline-block;margin:10px 6px 0 0;padding:9px 12px;border:1px solid #ffffff2a;border-radius:999px;background:#ffffff0c;color:#fff;text-decoration:none;font-size:11px;cursor:pointer}.modal{display:none;position:fixed;inset:0;background:#000c;backdrop-filter:blur(12px);z-index:20;padding:18px;overflow:auto}.modal.open{display:block}.box{max-width:1100px;margin:4vh auto;background:#08111e;border:1px solid #ffffff20;border-radius:22px;padding:18px}.close{float:right;border:1px solid #ffffff2a;background:#ffffff0c;color:#fff;border-radius:50%;width:36px;height:36px;font-size:20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;clear:both;padding-top:15px}.cert{background:#ffffff08;border:1px solid #ffffff12;border-radius:14px;padding:8px;cursor:pointer}.cert img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:9px}.cert b{display:block;font-size:12px;padding:8px 4px 3px}.cert small{display:block;color:#9faec4;padding:0 4px 7px}@media(max-width:650px){.pill{display:none}.hero{top:9%}.hero h1{font-size:48px}.portrait{top:28%;width:78px;height:78px}.help{max-width:60%}#v12-joystick{display:block}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}}
+.reduce-motion #v7-particles,.reduce-motion .v8-portal-ring,.reduce-motion #v8-flash{display:none!important}
+
+#intro{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,#12354c 0,#050a12 48%,#02040a 100%);transition:opacity .9s,visibility .9s;overflow:hidden}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.introGlow{position:absolute;width:55vw;height:55vw;border-radius:50%;background:#4fe2ff18;filter:blur(55px);animation:pulse 3s ease-in-out infinite}
+.introContent{position:relative;text-align:center;padding:28px}
+.introPhoto{width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid #8be8ff99;box-shadow:0 0 70px #4fe2ff55;margin-bottom:18px}
+.introK{font-size:10px;letter-spacing:.4em;color:#8ee7ff}
+.introTitle{font-size:clamp(48px,10vw,110px);font-weight:900;letter-spacing:.06em;line-height:.85;margin:12px 0}
+.introSub{font-size:12px;letter-spacing:.18em;color:#b8c9df}
+.enter{margin-top:28px;padding:13px 24px;border:1px solid #72eaff66;border-radius:999px;background:#ffffff0b;color:#fff;font-weight:800;letter-spacing:.16em;cursor:pointer;box-shadow:0 0 35px #4fe2ff22}
+.enter:hover{background:#4fe2ff16}
+@keyframes pulse{50%{transform:scale(1.15);opacity:.7}}
+
+/* V5 game HUD */
+#hud5{position:fixed;left:18px;right:18px;top:18px;z-index:20;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+.hudCard{pointer-events:auto;backdrop-filter:blur(14px);background:#06101dcc;border:1px solid #8be8ff2e;border-radius:16px;padding:12px 14px;box-shadow:0 12px 40px #0007}
+.hudName{font-weight:900;letter-spacing:.08em}.hudSub{font-size:10px;color:#9fb3ca;margin-top:4px}
+.hudRight{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.dest{border:1px solid #8be8ff38;background:#ffffff08;color:#dff9ff;border-radius:999px;padding:8px 11px;font-size:10px;cursor:pointer}
+.dest:hover{background:#4fe2ff18}
+#guide5{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:21;width:min(520px,calc(100vw - 32px));pointer-events:none}
+.guideBox{background:#06101de8;border:1px solid #8be8ff38;border-radius:18px;padding:12px 16px;box-shadow:0 14px 50px #0009;display:flex;gap:12px;align-items:center}
+.guideDot{width:12px;height:12px;border-radius:50%;background:#70eaff;box-shadow:0 0 20px #70eaff;animation:guidePulse 1.2s infinite}
+@keyframes guidePulse{50%{transform:scale(1.5);opacity:.5}}
+
+/* V6 presentation layer */
+#v6-overlay{position:fixed;inset:0;z-index:40;display:none;place-items:center;background:#02050bd9;backdrop-filter:blur(12px);padding:22px}
+#v6-overlay.show{display:grid}
+.v6-panel{width:min(900px,96vw);max-height:82vh;overflow:auto;border:1px solid #8be8ff40;border-radius:24px;background:#07111eeF;box-shadow:0 30px 100px #000b;padding:26px}
+.v6-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+.v6-title{font-size:clamp(24px,4vw,42px);font-weight:900;letter-spacing:.04em}
+.v6-close{border:1px solid #8be8ff40;background:#ffffff08;color:#fff;border-radius:50%;width:38px;height:38px;cursor:pointer}
+.v6-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.v6-card{padding:18px;border:1px solid #8be8ff25;border-radius:18px;background:linear-gradient(145deg,#ffffff09,#ffffff03)}
+.v6-card h3{margin:0 0 8px;font-size:16px}.v6-card p{color:#aebed2;font-size:13px;line-height:1.65;margin:0}
+.v6-chip{display:inline-block;padding:6px 9px;margin:4px 4px 0 0;border:1px solid #8be8ff25;border-radius:999px;font-size:11px;color:#d8f8ff}
+#v6-toast{position:fixed;left:50%;top:84px;transform:translateX(-50%);z-index:45;opacity:0;pointer-events:none;transition:.35s;background:#07111eee;border:1px solid #8be8ff40;border-radius:999px;padding:10px 16px;font-size:11px}
+#v6-toast.show{opacity:1}
+
+/* V7 visual polish */
+.v7-particle{position:fixed;width:3px;height:3px;border-radius:50%;background:#9eeeff;box-shadow:0 0 12px #7beaff;pointer-events:none;z-index:2;opacity:.7}
+.v7-portal{position:absolute;width:86px;height:86px;border:2px solid #72eaff66;border-radius:50%;box-shadow:0 0 25px #4fe2ff44,inset 0 0 25px #4fe2ff22;animation:portalSpin 5s linear infinite}
+@keyframes portalSpin{to{transform:rotate(360deg)}}
+.v7-scan{height:2px;background:linear-gradient(90deg,transparent,#78eaff,transparent);animation:scan 2.2s linear infinite;margin-top:10px}
+@keyframes scan{from{transform:translateX(-20%);opacity:.1}50%{opacity:1}to{transform:translateX(20%);opacity:.1}}
+.v7-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid #8be8ff30;border-radius:999px;background:#ffffff07;font-size:10px;color:#ccefff}
+.v7-dot{width:7px;height:7px;border-radius:50%;background:#72eaff;box-shadow:0 0 10px #72eaff}
+
+/* V8 cinematic transitions */
+#v8-flash{position:fixed;inset:0;z-index:60;background:radial-gradient(circle,#baf6ff55,transparent 45%);opacity:0;pointer-events:none}
+#v8-flash.play{animation:v8flash .7s ease-out}
+@keyframes v8flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+.v8-portal-ring{position:fixed;left:50%;top:50%;width:20px;height:20px;border:1px solid #8be8ff88;border-radius:50%;transform:translate(-50%,-50%) scale(1);opacity:0;pointer-events:none;z-index:59}
+.v8-portal-ring.play{animation:v8portal .8s ease-out}
+@keyframes v8portal{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(18)}}
+
+.v9-resume{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 15px;border:1px solid #8be8ff55;border-radius:999px;background:#4fe2ff12;color:#e8fbff;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.08em;box-shadow:0 0 25px #4fe2ff18}
+.v9-resume:hover{background:#4fe2ff22;transform:translateY(-1px)}
+
+/* V10 launch polish */
+#v10-launch{position:fixed;inset:0;z-index:70;display:grid;place-items:center;background:#02050c;transition:opacity 1s,visibility 1s}
+#v10-launch.done{opacity:0;visibility:hidden;pointer-events:none}
+.v10-core{width:min(520px,84vw);text-align:center}
+.v10-logo{font-size:clamp(42px,10vw,92px);font-weight:950;letter-spacing:.08em;line-height:.9}
+.v10-line{height:1px;background:linear-gradient(90deg,transparent,#8be8ff,transparent);margin:22px 0}
+.v10-status{font-size:10px;letter-spacing:.22em;color:#9db5ca}
+.v10-progress{height:3px;margin:18px auto 0;max-width:360px;border-radius:9px;background:#ffffff0b;overflow:hidden}
+.v10-progress span{display:block;width:0;height:100%;background:#7deaff;box-shadow:0 0 18px #7deaff;transition:width 1.7s}
+.v10-enter{margin-top:20px;opacity:0;transform:translateY(8px);transition:.5s;padding:12px 22px;border:1px solid #8be8ff55;border-radius:999px;background:#4fe2ff10;color:#fff;font-weight:800;letter-spacing:.12em;cursor:pointer}
+.v10-enter.ready{opacity:1;transform:none}
+
+/* V12 responsive game controls */
+#v11-controls{position:fixed;right:18px;bottom:72px;z-index:25;display:none;gap:8px;user-select:none}
+#v12-joystick{position:fixed;left:18px;bottom:24px;width:118px;height:118px;border:1px solid #8be8ff38;border-radius:50%;background:#06101d99;backdrop-filter:blur(12px);z-index:25;display:none;touch-action:none;box-shadow:0 0 40px #39dfff18}
+#v12-stick{position:absolute;left:39px;top:39px;width:40px;height:40px;border-radius:50%;background:#8be8ff22;border:1px solid #8be8ff77;box-shadow:0 0 24px #39dfff44;pointer-events:none}
+#v12-tools{position:fixed;right:18px;top:62px;z-index:26;display:flex;gap:7px}
+.v12-tool{border:1px solid #ffffff22;border-radius:999px;background:#06101dcc;color:#dffaff;padding:8px 10px;font-size:10px;backdrop-filter:blur(10px)}
+#v12-help{display:none;position:fixed;inset:0;z-index:40;background:#02060dcc;backdrop-filter:blur(14px);align-items:center;justify-content:center;padding:22px}
+#v12-help .v12-helpbox{width:min(520px,100%);background:#07111eea;border:1px solid #ffffff20;border-radius:22px;padding:22px;box-shadow:0 25px 80px #000b}
+#v12-help h2{margin:0 0 10px}.v12-key{display:inline-block;padding:6px 9px;margin:3px;border:1px solid #ffffff20;border-radius:8px;background:#ffffff09;font-size:11px}
+.v11-btn{width:46px;height:46px;border:1px solid #8be8ff40;border-radius:14px;background:#06101dcc;color:#dffaff;font-size:18px;backdrop-filter:blur(10px)}
+.v11-pad{display:grid;grid-template-columns:repeat(3,46px);gap:6px}
+.v11-empty{visibility:hidden}
+@media(max-width:800px){
+ #v11-controls{display:block}
+ #hud5{left:10px;right:10px;top:10px}
+ .hudRight{max-width:70vw}
+ .hudRight .dest{padding:7px 8px;font-size:9px}
+ #guide5{bottom:12px}
+}
+
+#v13-launch{position:fixed;right:18px;bottom:72px;z-index:26;display:flex;flex-direction:column;gap:7px;align-items:flex-end}
+.v13-q{border:1px solid #8be8ff33;background:#06101ddd;color:#e9f7ff;border-radius:999px;padding:8px 11px;font-size:10px;backdrop-filter:blur(12px);cursor:pointer;box-shadow:0 0 22px #38ddff12}
+#v13-help{position:fixed;inset:0;display:none;z-index:70;background:#02060dcc;backdrop-filter:blur(14px);align-items:center;justify-content:center;padding:18px}
+#v13-help.open{display:flex}.v13-helpbox{width:min(520px,100%);background:#08111e;border:1px solid #ffffff20;border-radius:22px;padding:22px;box-shadow:0 30px 100px #000}
+.v13-helpbox h2{margin:0 0 12px}.v13-key{display:inline-block;padding:5px 8px;border:1px solid #ffffff22;border-radius:7px;background:#ffffff09;margin:3px;font-size:11px}
+.v13-project{background:#ffffff08;border:1px solid #ffffff14;border-radius:16px;padding:16px}.v13-project h3{margin:0 0 7px}.v13-project p{color:#b7c5d7;font-size:12px;line-height:1.5}.v13-project .btn{margin-top:3px}
+</style>
+<style id="v14-style">#v14-map{position:fixed;right:18px;top:62px;width:150px;height:100px;border:1px solid #7ee9ff44;border-radius:14px;background:#04101acc;backdrop-filter:blur(12px);z-index:24;pointer-events:none;box-shadow:0 0 35px #35dfff18}#v14-map b{position:absolute;left:9px;top:7px;font-size:8px;letter-spacing:.2em;color:#9cecff}.v14-dot{position:absolute;width:7px;height:7px;border-radius:50%;transform:translate(-50%,-50%);background:#5ee8ff;box-shadow:0 0 9px #5ee8ff}.v14-player{width:10px;height:10px;background:#fff}.v14-save{position:absolute;right:9px;bottom:7px;font-size:8px;color:#8ea4ba}.v14-toast{position:fixed;left:50%;top:72px;transform:translate(-50%,-12px);opacity:0;z-index:50;padding:9px 14px;border:1px solid #7ee9ff33;border-radius:999px;background:#06111ee8;color:#dff9ff;font-size:10px;letter-spacing:.08em;transition:.25s;pointer-events:none}.v14-toast.on{opacity:1;transform:translate(-50%,0)}@media(max-width:650px){#v14-map{top:auto;right:12px;bottom:150px;width:120px;height:82px}.v14-toast{top:62px}}</style>
+
+<style id="v15-style">
+#v15-questBtn{position:fixed;left:18px;top:62px;z-index:25;border:1px solid #7ee9ff44;background:#06101ddd;color:#e9f7ff;border-radius:999px;padding:8px 12px;font-size:10px;backdrop-filter:blur(12px);cursor:pointer;box-shadow:0 0 22px #38ddff12}
+#v15-quest{position:fixed;inset:0;display:none;z-index:75;background:#02060dcc;backdrop-filter:blur(14px);align-items:center;justify-content:center;padding:18px}
+#v15-quest.open{display:flex}.v15-box{width:min(620px,100%);background:#08111e;border:1px solid #ffffff20;border-radius:22px;padding:22px;box-shadow:0 30px 100px #000}.v15-box h2{margin:0 0 5px}.v15-sub{color:#91a5bb;font-size:11px;margin-bottom:16px}.v15-bar{height:7px;background:#ffffff0b;border-radius:999px;overflow:hidden;margin:8px 0 16px}.v15-fill{height:100%;width:0;background:linear-gradient(90deg,#48ddff,#9b7cff);box-shadow:0 0 14px #55ddff77;transition:width .4s}.v15-qrow{display:flex;align-items:center;gap:10px;padding:11px 12px;margin:7px 0;border:1px solid #ffffff12;border-radius:13px;background:#ffffff06}.v15-check{width:22px;height:22px;border-radius:50%;border:1px solid #ffffff2a;display:grid;place-items:center;color:#06111e;font-size:12px}.v15-qrow.done .v15-check{background:#68e8ff;border-color:#68e8ff}.v15-qrow.done{border-color:#68e8ff33}.v15-qtext{flex:1;font-size:11px}.v15-xp{font-size:9px;color:#8ee7ff}.v15-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}.v15-badge{padding:7px 9px;border-radius:999px;background:#ffffff07;border:1px solid #ffffff12;color:#718398;font-size:9px}.v15-badge.on{color:#dffaff;border-color:#67e7ff55;background:#67e7ff10}.v15-rank{float:right;color:#8ee7ff;font-size:10px}.v15-toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,12px);opacity:0;z-index:80;padding:10px 15px;border:1px solid #7ee9ff44;border-radius:999px;background:#06111ef2;color:#e8fbff;font-size:10px;letter-spacing:.06em;transition:.25s;pointer-events:none}.v15-toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:650px){#v15-questBtn{left:12px;top:58px}.v15-box{padding:17px}.v15-rank{float:none;display:block;margin-top:3px}}
+</style>
+<style id="v22-style">#v22-panel{position:fixed;inset:0;background:rgba(2,5,14,.82);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}#v22-panel.open{display:flex}.v22-box{width:min(1100px,96vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#0a1124,#111a31);border:1px solid #3df5ff55;border-radius:24px;padding:24px;box-shadow:0 0 60px #00eaff22}.v22-head{display:flex;justify-content:space-between;align-items:center}.v22-kicker{font-size:11px;letter-spacing:3px;color:#5df7ff}.v22-close{background:none;border:0;color:#fff;font-size:30px}.v22-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}.v22-card{background:#0b1428;border:1px solid #ffffff18;border-radius:16px;padding:12px;cursor:pointer;transition:.2s}.v22-card:hover{transform:translateY(-4px);border-color:#4df5ff88}.v22-card img{width:100%;height:145px;object-fit:cover;border-radius:10px}.v22-card h3{font-size:15px;margin:10px 0 4px}.v22-card p{font-size:12px;color:#9faec4;margin:0}.v22-view{margin-top:18px;text-align:center;color:#9faec4;font-size:12px}</style>
+<style id="v27-style">
+#v27-panel{position:fixed;inset:0;background:rgba(2,6,18,.82);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:99999;padding:18px;font-family:system-ui,sans-serif}.v27-box{width:min(900px,96vw);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#071426,#0b1e35);border:1px solid #4bdcff55;border-radius:24px;padding:24px;box-shadow:0 25px 100px #000c;color:#eaf8ff}.v27-head{display:flex;justify-content:space-between;align-items:start}.v27-k{font-size:11px;letter-spacing:2px;color:#6cf}.v27-box h2{margin:6px 0 16px;font-size:30px}.v27-close{background:#ffffff12;color:#fff;border:1px solid #ffffff22;border-radius:10px;font-size:24px;width:42px;height:42px}.v27-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.v27-card{padding:16px;border:1px solid #ffffff18;border-radius:16px;background:#ffffff08}.v27-card b{display:block;color:#8de7ff;margin-bottom:7px}.v27-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.v27-actions button{padding:11px 14px;border-radius:11px;border:1px solid #61dcff55;background:#0c2942;color:#eaf8ff;font-weight:700}.v27-note{opacity:.65;font-size:12px;margin-top:14px}@media(max-width:700px){.v27-grid{grid-template-columns:1fr}.v27-box{padding:18px}.v27-box h2{font-size:24px}}
+</style>
+</head><body>
+
+
+<div id="v12-tools"><button class="v12-tool" id="v12-helpBtn">⌨ HELP</button><button class="v12-tool" id="v12-motionBtn">◐ MOTION</button></div>
+<div id="v12-joystick" aria-label="Touch joystick"><div id="v12-stick"></div></div>
+
+<button id="v15-questBtn">★ QUEST LOG <span id="v15-xpTop">0 XP</span></button>
+<div id="v15-quest">
+ <div class="v15-box"><button class="close" id="v15-close">×</button>
+  <h2>Portfolio Quest Log <span class="v15-rank" id="v15-rank">ROOKIE EXPLORER</span></h2>
+  <div class="v15-sub">Explore Alekhya's portfolio world and unlock milestones.</div>
+  <div><span id="v15-progressText">0 / 6 quests</span><span style="float:right;color:#8ea4ba;font-size:9px" id="v15-xp">0 XP</span></div>
+  <div class="v15-bar"><div class="v15-fill" id="v15-fill"></div></div>
+  <div id="v15-list"></div>
+  <div class="v15-sub" style="margin:15px 0 6px">Badges</div><div class="v15-badges" id="v15-badges"></div>
+ </div>
+</div>
+<div class="v15-toast" id="v15-toast"></div>
+<div id="v13-launch"><button class="v13-q" id="v13-projects">⚡ PROJECTS</button><button class="v13-q" id="v13-certs">▣ CERTIFICATES</button><button class="v13-q" id="v13-helpbtn">? CONTROLS</button></div>
+<div id="v13-help"><div class="v13-helpbox"><button class="close" id="v13-close">×</button><h2>Portfolio Controls</h2><p style="color:#9faec4">Explore the world like a small game.</p><div><span class="v13-key">W</span><span class="v13-key">A</span><span class="v13-key">S</span><span class="v13-key">D</span> Move</div><div><span class="v13-key">↑</span><span class="v13-key">↓</span><span class="v13-key">←</span><span class="v13-key">→</span> Move / explore</div><div><span class="v13-key">SPACE</span> Jump / interact</div><div><span class="v13-key">ESC</span> Close panels</div><p style="margin-top:16px;color:#8ee7ff">Mobile: drag the joystick and tap Quick Launch buttons.</p></div></div>
+<div class="modal" id="v13-projectModal"><div class="box"><button class="close" id="v13-pclose">×</button><h2>Projects</h2><p style="color:#9faec4">Projects listed in the current portfolio/resume content.</p><div class="grid"><div class="v13-project"><h3>Credit Card Processing System</h3><p>Explores transaction lifecycle stages, UML system modeling, payment-processing concepts, error handling, PCI-DSS concepts and basic fraud-detection considerations.</p></div><div class="v13-project"><h3>Weather Prediction App</h3><p>Responsive web application using HTML/CSS and the OpenWeatherMap API, with live weather data, automatic location detection and mobile/desktop layouts.</p><a class="btn" href="https://github.com/alekhyaalli2510" target="_blank">GitHub ↗</a></div></div></div></div>
+<div id="v12-help"><div class="v12-helpbox"><button class="close" id="v12-helpClose">×</button><h2>Explore Controls</h2><p style="color:#9faec4;line-height:1.6">Move around the 3D world, select destinations, and open detailed panels.</p><div><span class="v12-key">W</span><span class="v12-key">A</span><span class="v12-key">S</span><span class="v12-key">D</span> or <span class="v12-key">↑</span><span class="v12-key">←</span><span class="v12-key">↓</span><span class="v12-key">→</span> Move</div><div style="margin-top:8px"><span class="v12-key">Mouse / Touch</span> Look around</div><div style="margin-top:8px"><span class="v12-key">Double-click</span> Open destination details</div><div style="margin-top:8px"><span class="v12-key">Esc</span> Close panels</div></div></div>
+<div id="v11-controls">
+  <div class="v11-pad">
+    <span class="v11-empty"></span><button class="v11-btn" data-key="ArrowUp">▲</button><span class="v11-empty"></span>
+    <button class="v11-btn" data-key="ArrowLeft">◀</button><button class="v11-btn" data-key="ArrowDown">▼</button><button class="v11-btn" data-key="ArrowRight">▶</button>
+  </div>
+</div>
+<div id="v10-launch">
+  <div class="v10-core">
+    <div class="v10-status">INITIALIZING PORTFOLIO WORLD</div>
+    <div class="v10-logo">AP</div>
+    <div class="v10-line"></div>
+    <div class="v10-status" id="v10-status">LOADING EXPERIENCE...</div>
+    <div class="v10-progress"><span id="v10-progress"></span></div>
+    <button class="v10-enter" id="v10-enter">ENTER PORTFOLIO</button>
+  </div>
+</div>
+<div id="intro">
+  <div class="introGlow"></div>
+  <div class="introContent">
+    <img class="introPhoto" src="assets/profile.png" alt="P. Alekhya">
+    <div class="introK">WELCOME TO MY PORTFOLIO WORLD</div>
+    <div class="introTitle">P. ALEKHYA</div>
+    <div class="introSub">COMPUTER SCIENCE ENGINEER · 8.91 / 10</div><br><a class="v9-resume" href="assets/Alekhya_Resume_Updated_8_91.docx" download>VIEW / DOWNLOAD RESUME</a>
+    <button class="enter" id="enterWorld">ENTER THE WORLD</button>
+  </div>
+</div>
+
+<div id="hud5">
+  <div class="hudCard">
+    <div class="hudName">P. ALEKHYA</div>
+    <div class="hudSub">COMPUTER SCIENCE ENGINEER · 8.91 / 10</div>
+  </div>
+  <div class="hudCard hudRight">
+    <button class="dest" data-dest="about">ABOUT</button>
+    <button class="dest" data-dest="skills">SKILLS</button>
+    <button class="dest" data-dest="projects">PROJECTS</button>
+    <button class="dest" data-dest="education">EDUCATION</button>
+    <button class="dest" data-dest="certifications">CERTIFICATIONS</button>
+    <button class="dest" data-dest="contact">CONTACT</button><a class="dest" href="assets/Alekhya_Resume_Updated_8_91.docx" download style="text-decoration:none">RESUME</a>
+  </div>
+</div>
+<div id="guide5">
+  <div class="guideBox"><span class="guideDot"></span><span id="guideText">Welcome. Explore the islands to discover P. Alekhya's portfolio.</span></div>
+</div>
+
+<div id="v8-flash"></div><div class="v8-portal-ring" id="v8-ring"></div><div id="v6-overlay">
+  <div class="v6-panel">
+    <div class="v6-head">
+      <div class="v6-title" id="v6-title">Portfolio</div>
+      <button class="v6-close" id="v6-close">×</button>
+    </div>
+    <div id="v6-content"></div>
+  </div>
+</div>
+<div id="v6-toast"></div>
+
+<div id="v7-particles"></div>
+<div style="position:fixed;right:18px;bottom:18px;z-index:19;pointer-events:none">
+  <div class="hudCard">
+    <span class="v7-badge"><span class="v7-dot"></span> WORLD ONLINE</span>
+    <div class="v7-scan"></div>
+  </div>
+</div>
+<div id="scene"></div>
+<div id="v14-map"><b>WORLD RADAR</b><span class="v14-save" id="v14-save">AUTO-SAVE ON</span></div><div class="v14-toast" id="v14-toast"></div>
+<div id="hud"><div class="top"><div class="brand">P. ALEKHYA</div><div class="pill">V12 · WASD / ARROWS · TOUCH · CLICK · DOUBLE-TAP DESTINATIONS</div></div><div class="hero"><div class="k">WELCOME TO MY WORLD</div><h1>ALEKHYA</h1><p>COMPUTER SCIENCE ENGINEER</p></div><img class="portrait" src="assets/profile.png" alt="P. Alekhya"><div class="help">Walk through the islands to explore my portfolio.</div><div class="status" id="status">READY TO EXPLORE</div><div class="card" id="card"><h2 id="ct"></h2><div id="tags"></div><p id="desc"></p><div id="actions"></div></div></div>
+<div class="modal" id="certModal"><div class="box"><button class="close" id="close">×</button><h2>Certifications</h2><p style="color:#9faec4">Your supplied certificates are shown below.</p><div class="grid" id="certGrid"></div></div></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x07101c);scene.fog=new THREE.Fog(0x07101c,35,105);
+const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,150);camera.position.set(0,10,27);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;document.querySelector('#scene').appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0x9edfff,0x142031,2.1));const sun=new THREE.DirectionalLight(0xffd0a2,3.4);sun.position.set(-12,20,10);sun.castShadow=true;scene.add(sun);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=9;controls.maxDistance=36;controls.maxPolarAngle=1.48;controls.target.set(0,1,0);
+const world=new THREE.Group();scene.add(world);
+// floating home island
+const home=new THREE.Mesh(new THREE.CylinderGeometry(10,14,1.4,64),new THREE.MeshStandardMaterial({color:0x102b3a,roughness:.7,metalness:.15}));home.position.y=-.7;home.receiveShadow=true;world.add(home);
+function labelSprite(text){const c=document.createElement('canvas');c.width=512;c.height=128;const x=c.getContext('2d');x.clearRect(0,0,512,128);x.font='bold 44px Arial';x.fillStyle='#bcefff';x.textAlign='center';x.fillText(text,256,75);const tex=new THREE.CanvasTexture(c);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false}));s.scale.set(3.2,.8,1);return s}
+const data=[
+{name:'ABOUT',x:-7,z:1,tags:['B.Tech CSE','CGPA 8.91/10'],desc:'Computer Science and Engineering graduate from Mohan Babu University, Tirupati. Seeking entry-level software development or Python development opportunities.'},
+{name:'SKILLS',x:7,z:1,tags:['Python','Java','SQL','HTML/CSS','REST APIs','Git/GitHub'],desc:'Programming: Python, Java, SQL. Web: HTML, CSS, Responsive Web Design. Tools & APIs: Git, GitHub, REST APIs, OpenWeatherMap API. Concepts: OOP, DBMS, UML, debugging, error handling, secure coding fundamentals, payment processing.'},
+{name:'PROJECTS',x:-8,z:-9,tags:['Credit Card Processing','Weather App'],desc:'Credit Card Processing System: transaction lifecycle modeling, UML, PCI-DSS, fraud detection and error-handling concepts. Weather Prediction App: responsive HTML/CSS app using OpenWeatherMap API with automatic location detection.'},
+{name:'EDUCATION',x:8,z:-9,tags:['2022–2026','Mohan Babu University'],desc:'B.Tech Computer Science and Engineering — Mohan Babu University, Tirupati | 2022–2026 | CGPA 8.91/10. Intermediate MPC 56.1%; SSC GPA 8.2/10.'},
+{name:'CERTIFICATIONS',x:0,z:-17,tags:['9 certificates','Python','Data','Power BI'],desc:'Interactive gallery of the certificate images provided for this portfolio.',cert:true},
+{name:'EXPERIENCE',x:-9,z:-17,tags:['Python Internship','Full Stack'],desc:'Internship credentials included in the supplied certificate set: Python Internship and Python Full Stack Development Internship.'},
+{name:'CONTACT',x:9,z:-17,tags:['Email','GitHub','LinkedIn'],desc:'Connect with Alekhya for entry-level software/Python development opportunities.'}
+];
+function island(d,i){const g=new THREE.Group();g.position.set(d.x,0,d.z);g.userData=d;const base=new THREE.Mesh(new THREE.CylinderGeometry(2.5,3.15,.9,8),new THREE.MeshStandardMaterial({color:[0x173a55,0x173d4c,0x243c5b,0x1c4650][i%4],roughness:.65,metalness:.15}));base.castShadow=true;g.add(base);const top=new THREE.Mesh(new THREE.CylinderGeometry(2.15,2.45,.35,8),new THREE.MeshStandardMaterial({color:0x153c48,roughness:.5}));top.position.y=.62;g.add(top);const ring=new THREE.Mesh(new THREE.TorusGeometry(2.12,.045,8,48),new THREE.MeshBasicMaterial({color:0x76e6ff}));ring.rotation.x=Math.PI/2;ring.position.y=.82;g.add(ring);const tower=new THREE.Mesh(new THREE.BoxGeometry(1.35,1.35,1.35),new THREE.MeshStandardMaterial({color:0x0b1622,metalness:.7,roughness:.2}));tower.position.y=1.6;tower.rotation.y=.5;tower.castShadow=true;g.add(tower);const beacon=new THREE.PointLight(0x4fe2ff,2.2,7);beacon.position.y=2.8;g.add(beacon);const s=labelSprite(d.name);s.position.y=3.5;g.add(s);world.add(g);return g}
+const islands=data.map(island);
+// glowing bridges
+function bridge(a,b){const mid=new THREE.Vector3().addVectors(a,b).multiplyScalar(.5);const len=a.distanceTo(b);const m=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,len,12),new THREE.MeshBasicMaterial({color:0x54dcff,transparent:true,opacity:.45}));m.position.copy(mid);m.rotation.z=Math.PI/2;m.rotation.y=Math.atan2(b.z-a.z,b.x-a.x);world.add(m)}
+for(let i=0;i<islands.length-1;i++)bridge(islands[i].position.clone().setY(.35),islands[i+1].position.clone().setY(.35));
+// stars
+const sg=new THREE.BufferGeometry(),pts=[];for(let i=0;i<1000;i++)pts.push((Math.random()-.5)*110,Math.random()*38+3,(Math.random()-.5)*110);sg.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xb9eaff,size:.045,transparent:true,opacity:.7})));
+// playable character
+const avatar=new THREE.Group();const body=new THREE.Mesh(new THREE.CapsuleGeometry(.48,1.05,6,12),new THREE.MeshStandardMaterial({color:0x51d9ff,metalness:.35,roughness:.28}));body.position.y=1.18;body.castShadow=true;avatar.add(body);const head=new THREE.Mesh(new THREE.SphereGeometry(.43,20,16),new THREE.MeshStandardMaterial({color:0xf0c0a5,roughness:.65}));head.position.y=2.2;head.castShadow=true;avatar.add(head);const visor=new THREE.Mesh(new THREE.BoxGeometry(.48,.12,.08),new THREE.MeshStandardMaterial({color:0x06121e,metalness:.7,roughness:.15}));visor.position.set(0,2.22,.39);avatar.add(visor);const ring=new THREE.Mesh(new THREE.TorusGeometry(.65,.035,8,32),new THREE.MeshBasicMaterial({color:0x4fe2ff}));ring.rotation.x=Math.PI/2;ring.position.y=.12;avatar.add(ring);avatar.position.set(0,0,5.5);world.add(avatar);
+// robot guide
+const robot=new THREE.Group();const rb=new THREE.Mesh(new THREE.BoxGeometry(.75,1,.65),new THREE.MeshStandardMaterial({color:0x8797aa,metalness:.8,roughness:.25}));rb.position.y=.95;robot.add(rb);const rh=new THREE.Mesh(new THREE.SphereGeometry(.38,16,12),new THREE.MeshStandardMaterial({color:0x9eacbd,metalness:.7,roughness:.2}));rh.position.y=1.75;robot.add(rh);const eye=new THREE.Mesh(new THREE.BoxGeometry(.38,.08,.05),new THREE.MeshBasicMaterial({color:0x5ee8ff}));eye.position.set(0,1.75,.35);robot.add(eye);robot.position.set(3,0,4);world.add(robot);
+
+const intro=document.getElementById('intro');
+const enterWorld=document.getElementById('enterWorld');
+let cinematic=false, cinematicStart=0;
+enterWorld.onclick=()=>{
+  intro.classList.add('hide');
+  cinematic=true; cinematicStart=performance.now();
+  status.textContent='ENTERING MY WORLD...';
+  camera.position.set(0,18,42);
+  controls.target.set(0,1,0);
+};
+
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
+function show(d){ct.textContent=d.name;tags.innerHTML=d.tags.map(t=>`<span class="tag">${t}</span>`).join('');desc.textContent=d.desc;actions.innerHTML='';if(d.cert){const b=document.createElement('button');b.className='btn';b.textContent='Open certificate gallery';b.onclick=()=>certModal.classList.add('open');actions.appendChild(b)}if(d.name==='PROJECTS'){const a=document.createElement('a');a.className='btn';a.href='https://github.com/alekhyaalli2510';a.target='_blank';a.textContent='GitHub ↗';actions.appendChild(a)}if(d.name==='CONTACT'){const a=document.createElement('a');a.className='btn';a.href='mailto:alekhyaalli2510@gmail.com';a.textContent='Email ↗';actions.appendChild(a)}card.classList.add('show');status.textContent='EXPLORING '+d.name}
+renderer.domElement.addEventListener('click',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=(e.clientX-r.left)/r.width*2-1;mouse.y=-(e.clientY-r.top)/r.height*2+1;ray.setFromCamera(mouse,camera);const h=ray.intersectObjects(islands,true);if(h.length){let o=h[0].object;while(o.parent&&!o.userData.name)o=o.parent;if(o.userData.name)show(o.userData)}});
+const certs=[['Practical Python Programming for Beginners','Alison · CPD','assets/practical-python.jpg'],['Leadership Skills','IIMA · Coursera','assets/leadership-skills.jpg'],['Data Analysis with Python','IBM · Coursera','assets/data-analysis-python.jpg'],['AI Fundamentals','Google · Coursera','assets/ai-fundamentals.jpg'],['Machine Learning for Computer Vision','MathWorks · Coursera','assets/machine-learning-computer-vision.jpg'],['Foundations: Data, Data, Everywhere','Google · Coursera','assets/google-data-foundations.jpg'],['Mastering Power BI: Data Analysis and Dashboard Creation','Skill India Digital Hub / PHN Technology','assets/power-bi.jpg'],['Python Internship','upSkill Campus / UniConverge Technologies / AICTE','assets/python-internship.jpg'],['Python Full Stack Development Internship','ApexPlanet Software Pvt. Ltd.','assets/python-full-stack-internship.jpg']];certGrid.innerHTML=certs.map((c,i)=>`<div class="cert" data-i="${i}"><img src="${c[2]}" alt="${c[0]}"><b>${c[0]}</b><small>${c[1]}</small></div>`).join('');certGrid.onclick=e=>{const el=e.target.closest('.cert');if(el)window.open(certs[+el.dataset.i][2],'_blank')};close.onclick=()=>certModal.classList.remove('open');
+const pmodal=document.getElementById('v13-projectModal');
+document.getElementById('v13-projects').onclick=()=>pmodal.classList.add('open');
+document.getElementById('v13-certs').onclick=()=>certModal.classList.add('open');
+document.getElementById('v13-helpbtn').onclick=()=>document.getElementById('v13-help').classList.add('open');
+document.getElementById('v13-close').onclick=()=>document.getElementById('v13-help').classList.remove('open');
+document.getElementById('v13-pclose').onclick=()=>pmodal.classList.remove('open');
+document.getElementById('v13-help').onclick=e=>{if(e.target.id==='v13-help')e.currentTarget.classList.remove('open')};
+pmodal.onclick=e=>{if(e.target===pmodal)pmodal.classList.remove('open')};certModal.onclick=e=>{if(e.target===certModal)certModal.classList.remove('open')};
+let keys={};addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+let t=0;function loop(){requestAnimationFrame(loop);const rm=window.__reduceMotion===true;if(!rm)t+=.012;islands.forEach((g,i)=>{if(!rm){g.position.y=Math.sin(t*.65+i)*.09;g.rotation.y+=.0007}});if(!rm){robot.position.y=.08+Math.sin(t*2)*.08;robot.rotation.y+=.008;}const v=new THREE.Vector3((keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),0,(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0));if(v.lengthSq()){v.normalize().multiplyScalar(.105);avatar.position.add(v);avatar.position.x=THREE.MathUtils.clamp(avatar.position.x,-12,12);avatar.position.z=THREE.MathUtils.clamp(avatar.position.z,-21,9);avatar.rotation.y=Math.atan2(v.x,v.z);status.textContent='WALKING · '+Math.round(avatar.position.x)+','+Math.round(avatar.position.z);controls.target.lerp(new THREE.Vector3(avatar.position.x,1,avatar.position.z),.045)}
+if(cinematic){
+  const p=Math.min((performance.now()-cinematicStart)/2200,1);
+  const e=p*p*(3-2*p);
+  camera.position.lerp(new THREE.Vector3(0,10,27),e);
+  controls.target.lerp(new THREE.Vector3(0,1,0),e);
+  if(p>=1){cinematic=false;status.textContent='READY TO EXPLORE';}
+}
+controls.update();renderer.render(scene,camera)}loop();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+
+const guideText5=document.getElementById('guideText');
+const guideMessages5={
+  about:'Explore About to learn about my Computer Science background.',
+  skills:'Skills island: Python, Java, SQL, HTML, CSS, REST APIs and Git/GitHub.',
+  projects:'Projects island: Credit Card Processing System and Weather Prediction App.',
+  education:'Education island: B.Tech CSE at Mohan Babu University · CGPA 8.91/10.',
+  certifications:'Certification island: open the gallery to browse your uploaded certificates.',
+  contact:'Contact island: connect through email, GitHub and LinkedIn.'
+};
+document.querySelectorAll('.dest').forEach(b=>b.addEventListener('click',()=>{
+  const key=b.dataset.dest;
+  guideText5.textContent=guideMessages5[key]||'Explore the world.';
+  const target=(typeof sectionObjects!=='undefined') ? sectionObjects.find(o=>(o.userData?.key||'').toLowerCase()===key) : null;
+  if(target){ controls.target.copy(target.position); camera.position.set(target.position.x+8,target.position.y+6,target.position.z+10); }
+}));
+
+const v6Data={
+ about:{
+  title:'ABOUT ME',
+  html:`<div class="v6-card"><h3>Computer Science & Engineering</h3><p>Computer Science and Engineering graduate from Mohan Babu University, Tirupati. Seeking entry-level software development or Python development opportunities.</p></div>`
+ },
+ skills:{
+  title:'TECHNICAL SKILLS',
+  html:`<div class="v6-card"><h3>Programming</h3><span class="v6-chip">Python</span><span class="v6-chip">Java</span><span class="v6-chip">SQL</span></div>
+  <div class="v6-card"><h3>Web & Tools</h3><span class="v6-chip">HTML</span><span class="v6-chip">CSS</span><span class="v6-chip">Responsive Web Design</span><span class="v6-chip">Git</span><span class="v6-chip">GitHub</span><span class="v6-chip">REST APIs</span><span class="v6-chip">OpenWeatherMap API</span></div>
+  <div class="v6-card"><h3>Concepts</h3><p>Object-Oriented Programming · DBMS · API Integration · UML · Debugging · Error Handling · Secure Coding Fundamentals · Payment Processing</p></div>`
+ },
+ projects:{
+  title:'PROJECTS',
+  html:`<div class="v6-grid"><div class="v6-card"><h3>Credit Card Processing System</h3><p>Modeled authorization, processing and settlement workflows; created UML diagrams; applied basic PCI-DSS, fraud-detection and error-handling concepts.</p></div><div class="v6-card"><h3>Weather Prediction App</h3><p>Responsive web application using HTML, CSS and the OpenWeatherMap API with live weather data, automatic location detection and mobile/desktop layouts.</p></div></div>`
+ },
+ education:{
+  title:'EDUCATION',
+  html:`<div class="v6-grid"><div class="v6-card"><h3>B.Tech — Computer Science & Engineering</h3><p>Mohan Babu University, Tirupati · 2022–2026</p><div class="v6-chip">CGPA 8.91 / 10</div></div><div class="v6-card"><h3>Intermediate (MPC)</h3><p>Board of Intermediate Education · 2022 · 56.1%</p></div><div class="v6-card"><h3>SSC</h3><p>Board of Secondary Education · 2020 · GPA 8.2/10</p></div></div>`
+ },
+ certifications:{
+  title:'CERTIFICATIONS & VIRTUAL EXPERIENCE',
+  html:`<div class="v6-card"><h3>Resume-listed experience</h3><p>GenAI Powered Data Analytics — Job Simulation, 2025</p><p>Cybersecurity Analyst — Job Simulation, Tata via Forage, September 2025</p></div><div class="v6-card"><h3>Certificate gallery</h3><p>Use the Certifications section/gallery in the world to browse the uploaded certificate images.</p></div>`
+ },
+ contact:{
+  title:'LET’S CONNECT',
+  html:`<div class="v6-grid"><div class="v6-card"><h3>Email</h3><p>alekhyaalli2510@gmail.com</p></div><div class="v6-card"><h3>GitHub</h3><p>github.com/alekhyaalli2510</p></div><div class="v6-card"><h3>LinkedIn</h3><p>alekhya-pothapola-23a2652a8</p></div></div>`
+ }
+};
+
+const ov=document.getElementById('v6-overlay');
+const title6=document.getElementById('v6-title');
+const content6=document.getElementById('v6-content');
+document.getElementById('v6-close').onclick=()=>ov.classList.remove('show');
+
+function openV6(key){
+ const d=v6Data[key]; if(!d)return;
+ title6.textContent=d.title; content6.innerHTML=d.html; ov.classList.add('show');
+}
+document.querySelectorAll('.dest').forEach(b=>{
+ b.addEventListener('dblclick',()=>openV6(b.dataset.dest));
+});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape')ov.classList.remove('show');
+});
+
+const toast6=document.getElementById('v6-toast');
+function toastV6(t){
+ toast6.textContent=t; toast6.classList.add('show');
+ clearTimeout(window.__toast6); window.__toast6=setTimeout(()=>toast6.classList.remove('show'),2200);
+}
+
+const pfield=document.getElementById('v7-particles');
+for(let i=0;i<48;i++){
+ const s=document.createElement('span'); s.className='v7-particle';
+ s.style.left=(Math.random()*100)+'vw'; s.style.top=(Math.random()*100)+'vh';
+ s.style.opacity=(.2+Math.random()*.7);
+ s.style.transform=`scale(${.5+Math.random()*1.8})`;
+ pfield.appendChild(s);
+}
+let v7t=0;
+function v7AnimateParticles(){
+ v7t+=0.008;
+ [...pfield.children].forEach((s,i)=>{
+   const y=parseFloat(s.style.top);
+   const drift=Math.sin(v7t+i*.7)*.035;
+   s.style.top=((y+.015+drift+100)%100)+'vh';
+ });
+ requestAnimationFrame(v7AnimateParticles);
+}
+v7AnimateParticles();
+
+function v7Toast(msg){
+ if(typeof toastV6==='function') toastV6(msg);
+ else if(typeof status!=='undefined') status.textContent=msg;
+}
+
+const flash8=document.getElementById('v8-flash');
+const ring8=document.getElementById('v8-ring');
+function cinematic8(key){
+  flash8.classList.remove('play'); ring8.classList.remove('play');
+  void flash8.offsetWidth; void ring8.offsetWidth;
+  flash8.classList.add('play'); ring8.classList.add('play');
+  setTimeout(()=>{ if(typeof openV6==='function') openV6(key); },260);
+}
+document.querySelectorAll('.dest').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const key=b.dataset.dest;
+    if(typeof guideText5!=='undefined' && guideMessages5[key]) guideText5.textContent=guideMessages5[key];
+    cinematic8(key);
+  });
+});
+
+const launch10=document.getElementById('v10-launch');
+const progress10=document.getElementById('v10-progress');
+const status10=document.getElementById('v10-status');
+const enter10=document.getElementById('v10-enter');
+
+setTimeout(()=>progress10.style.width='35%',120);
+setTimeout(()=>{progress10.style.width='72%';status10.textContent='LOADING 3D WORLD...';},650);
+setTimeout(()=>{progress10.style.width='100%';status10.textContent='WORLD READY';enter10.classList.add('ready');},1350);
+enter10.addEventListener('click',()=>{
+  launch10.classList.add('done');
+  const intro=document.getElementById('intro');
+  if(intro) intro.classList.add('hide');
+  if(typeof status!=='undefined') status.textContent='READY TO EXPLORE';
+});
+
+// V11 touch controls: synthesize keyboard events for the existing movement system.
+document.querySelectorAll('.v11-btn').forEach(btn=>{
+  const key=btn.dataset.key;
+  const down=()=>document.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true}));
+  const up=()=>document.dispatchEvent(new KeyboardEvent('keyup',{key,bubbles:true}));
+  btn.addEventListener('touchstart',e=>{e.preventDefault();down()},{passive:false});
+  btn.addEventListener('touchend',e=>{e.preventDefault();up()},{passive:false});
+  btn.addEventListener('mousedown',down);
+  btn.addEventListener('mouseup',up);
+  btn.addEventListener('mouseleave',up);
+});
+
+// V13: quick-launch project/certificate panels and controls overlay.
+
+(()=>{
+ const joy=document.getElementById('v12-joystick'), stick=document.getElementById('v12-stick');
+ let active=false, held=new Set();
+ const keyMap={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};
+ function setKey(k,on){const key=keyMap[k]; if(on&&!held.has(key)){held.add(key);document.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true}))} if(!on&&held.has(key)){held.delete(key);document.dispatchEvent(new KeyboardEvent('keyup',{key,bubbles:true}))}}
+ function update(e){const r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const max=38,d=Math.hypot(dx,dy);if(d>max){dx=dx/d*max;dy=dy/d*max}stick.style.transform=`translate(${dx}px,${dy}px)`;setKey('left',dx<-14);setKey('right',dx>14);setKey('up',dy<-14);setKey('down',dy>14)}
+ joy.addEventListener('pointerdown',e=>{active=true;joy.setPointerCapture(e.pointerId);update(e)});joy.addEventListener('pointermove',e=>{if(active)update(e)});joy.addEventListener('pointerup',()=>{active=false;stick.style.transform='';Object.keys(keyMap).forEach(k=>setKey(k,false))});joy.addEventListener('pointercancel',()=>{active=false;stick.style.transform='';Object.keys(keyMap).forEach(k=>setKey(k,false))});
+ const help=document.getElementById('v12-help');document.getElementById('v12-helpBtn').onclick=()=>help.style.display='flex';document.getElementById('v12-helpClose').onclick=()=>help.style.display='none';help.onclick=e=>{if(e.target===help)help.style.display='none'};
+ window.__reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const mb=document.getElementById('v12-motionBtn');function sync(){document.body.classList.toggle('reduce-motion',window.__reduceMotion);mb.textContent=window.__reduceMotion?'● MOTION OFF':'◐ MOTION ON'}sync();mb.onclick=()=>{window.__reduceMotion=!window.__reduceMotion;sync();toastV6(window.__reduceMotion?'Reduced motion enabled':'Motion enabled')};
+ addEventListener('keydown',e=>{if(e.key==='?')help.style.display='flex';if(e.key==='Escape')help.style.display='none'});
+})();
+</script>
+<script id="v14-script">
+// V14: world radar + local exploration save state.
+(()=>{
+ const map=document.getElementById('v14-map'), toast=document.getElementById('v14-toast');
+ const points=[['HOME',50,62],['ABOUT',29,43],['SKILLS',71,43],['PROJECTS',75,70],['EDUCATION',29,75],['CERTS',50,28],['EXPERIENCE',18,28],['CONTACT',86,28]];
+ points.forEach(([n,x,y])=>{const d=document.createElement('span');d.className='v14-dot';d.title=n;d.style.left=x+'%';d.style.top=y+'%';map.appendChild(d)});
+ const player=document.createElement('span');player.className='v14-dot v14-player';map.appendChild(player);
+ function say(m){toast.textContent=m;toast.classList.add('on');clearTimeout(window.__v14toast);window.__v14toast=setTimeout(()=>toast.classList.remove('on'),1500)}
+ function save(){try{localStorage.setItem('ale_portfolio_position',JSON.stringify({x:avatar.position.x,z:avatar.position.z}));localStorage.setItem('ale_portfolio_visit',Date.now())}catch(e){}}
+ function restore(){try{const q=JSON.parse(localStorage.getItem('ale_portfolio_position')||'null');if(q&&typeof avatar!=='undefined'){avatar.position.x=Number(q.x)||0;avatar.position.z=Number(q.z)||0;say('WELCOME BACK · POSITION RESTORED')}}catch(e){}}
+ function radar(){if(typeof avatar==='undefined')return;const x=Math.max(0,Math.min(100,(avatar.position.x+12)/24*100));const y=Math.max(0,Math.min(100,(avatar.position.z+21)/30*100));player.style.left=x+'%';player.style.top=y+'%'}
+ let last=0;function tick(ts){if(ts-last>700){save();radar();last=ts}requestAnimationFrame(tick)}
+ window.addEventListener('load',()=>setTimeout(restore,700)); window.addEventListener('beforeunload',save); requestAnimationFrame(tick);
+ document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='m'){map.style.display=map.style.display==='none'?'block':'none';say(map.style.display==='none'?'RADAR HIDDEN':'RADAR VISIBLE')}});
+})();
+</script>
+
+<script id="v15-script">
+// V15: persistent portfolio quest system with XP and badges.
+(()=>{
+ const questBtn=document.getElementById('v15-questBtn'), panel=document.getElementById('v15-quest'), close=document.getElementById('v15-close'), list=document.getElementById('v15-list'), fill=document.getElementById('v15-fill'), progressText=document.getElementById('v15-progressText'), xpEl=document.getElementById('v15-xp'), xpTop=document.getElementById('v15-xpTop'), rank=document.getElementById('v15-rank'), badgesEl=document.getElementById('v15-badges'), toast=document.getElementById('v15-toast');
+ const quests=[
+  ['welcome','Enter the portfolio world',100],['explore','Open any destination panel',100],['projects','Explore the Projects island',150],['skills','Visit the Skills island',150],['certs','Open the certificate gallery',150],['contact','Reach the Contact destination',150]
+ ];
+ const badgeDefs=[['FIRST STEP','Complete your first quest'],['WORLD EXPLORER','Complete 3 quests'],['PORTFOLIO MASTER','Complete all 6 quests']];
+ let state={done:{},xp:0};
+ try{state=Object.assign(state,JSON.parse(localStorage.getItem('ale_quest_state')||'{}'));state.done=state.done||{}}catch(e){}
+ function persist(){try{localStorage.setItem('ale_quest_state',JSON.stringify(state))}catch(e){}}
+ function notify(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(window.__v15toast);window.__v15toast=setTimeout(()=>toast.classList.remove('on'),1900)}
+ function complete(id){if(state.done[id])return;const q=quests.find(x=>x[0]===id);if(!q)return;state.done[id]=true;state.xp=(state.xp||0)+q[2];persist();notify('QUEST COMPLETE · +'+q[2]+' XP');render()}
+ function render(){const n=quests.filter(q=>state.done[q[0]]).length,total=quests.length;progressText.textContent=n+' / '+total+' quests';xpEl.textContent=(state.xp||0)+' XP';xpTop.textContent=(state.xp||0)+' XP';fill.style.width=(n/total*100)+'%';rank.textContent=n===total?'PORTFOLIO MASTER':n>=3?'WORLD EXPLORER':'ROOKIE EXPLORER';list.innerHTML=quests.map(q=>`<div class="v15-qrow ${state.done[q[0]]?'done':''}"><div class="v15-check">${state.done[q[0]]?'✓':''}</div><div class="v15-qtext">${q[1]}</div><div class="v15-xp">+${q[2]} XP</div></div>`).join('');badgesEl.innerHTML=badgeDefs.map((b,i)=>{const on=(i===0&&n>=1)||(i===1&&n>=3)||(i===2&&n===total);return `<span class="v15-badge ${on?'on':''}">${on?'◆':'◇'} ${b[0]}</span>`}).join('')}
+ questBtn.onclick=()=>{panel.classList.add('open');render()};close.onclick=()=>panel.classList.remove('open');panel.onclick=e=>{if(e.target===panel)panel.classList.remove('open')};
+ document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='q')panel.classList.toggle('open');if(e.key==='Escape')panel.classList.remove('open')});
+ const oldEnter=document.getElementById('enterWorld'); if(oldEnter)oldEnter.addEventListener('click',()=>complete('welcome'));
+ document.querySelectorAll('.dest').forEach(b=>b.addEventListener('click',()=>{complete('explore');const k=b.dataset.dest;if(k==='PROJECTS')complete('projects');if(k==='SKILLS')complete('skills');if(k==='CONTACT')complete('contact');}));
+ const certLaunch=document.getElementById('v13-certs'); if(certLaunch)certLaunch.addEventListener('click',()=>complete('certs'));
+ const certModal=document.getElementById('certModal'); if(certModal){new MutationObserver(()=>{if(certModal.classList.contains('open'))complete('certs')}).observe(certModal,{attributes:true,attributeFilter:['class']})}
+ render();
+})();
+</script>
+
+<style id="v16-upgrade">
+#v16-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);padding:12px 18px;border:1px solid rgba(100,220,255,.5);border-radius:14px;background:rgba(4,10,24,.88);color:#dff8ff;font:600 13px system-ui;letter-spacing:.4px;opacity:0;pointer-events:none;transition:.3s;z-index:99999;box-shadow:0 0 30px rgba(0,200,255,.18)}#v16-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}#v16-theme{position:fixed;right:18px;bottom:18px;z-index:9999;border:1px solid rgba(120,220,255,.4);background:rgba(5,10,25,.72);color:#dff8ff;border-radius:999px;padding:9px 12px;cursor:pointer;backdrop-filter:blur(10px)}
+</style>
+<div id="v16-toast">✨ V16: Interactive portfolio mode enabled</div><button id="v16-theme" aria-label="Toggle visual mode">◐ Visual</button>
+<script>
+(()=>{const t=document.getElementById('v16-toast'),b=document.getElementById('v16-theme');let calm=localStorage.getItem('ale_v16_calm')==='1';
+function apply(){document.documentElement.style.setProperty('--v16-speed',calm?'0.35':'1');document.body.style.setProperty('animation-duration',(calm?'0.35':'1')+'s');b.textContent=calm?'✦ Motion':'◐ Visual';}
+apply(); b.onclick=()=>{calm=!calm;localStorage.setItem('ale_v16_calm',calm?'1':'0');apply();t.textContent=calm?'🌿 Reduced visual motion enabled':'⚡ Full visual motion enabled';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)};
+window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='v'){b.click()}});
+setTimeout(()=>t.classList.add('show'),900);setTimeout(()=>t.classList.remove('show'),3000);})();
+</script>
+
+
+<style id="v17-upgrade">
+#v17-open{position:fixed;right:18px;bottom:66px;z-index:9999;border:1px solid rgba(255,210,110,.45);background:rgba(10,12,25,.78);color:#fff3c4;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-weight:800;font-size:11px;letter-spacing:.06em}
+#v17-panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,5,15,.68);backdrop-filter:blur(12px);z-index:99998;padding:18px}
+#v17-panel.open{display:flex}
+.v17-box{width:min(720px,96vw);max-height:88vh;overflow:auto;border:1px solid rgba(120,220,255,.35);border-radius:22px;background:linear-gradient(145deg,rgba(7,17,35,.97),rgba(3,8,20,.97));box-shadow:0 30px 100px rgba(0,0,0,.5),0 0 50px rgba(60,210,255,.08);padding:24px;color:#eaf8ff}
+.v17-head{display:flex;justify-content:space-between;gap:15px;align-items:center}.v17-head h2{margin:0}.v17-close{border:0;background:transparent;color:#9fb5ca;font-size:28px;cursor:pointer}
+.v17-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.v17-card{border:1px solid rgba(130,210,255,.16);border-radius:16px;padding:15px;background:rgba(255,255,255,.025)}.v17-card h3{margin:0 0 7px;font-size:14px}.v17-card p{margin:0;color:#9fb0c5;font-size:12px;line-height:1.55}.v17-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.v17-btn{border:1px solid rgba(120,220,255,.35);background:rgba(80,210,255,.08);color:#dff8ff;border-radius:11px;padding:10px 13px;cursor:pointer;font-weight:800;font-size:11px}.v17-btn:hover{background:rgba(80,210,255,.16)}
+@media(max-width:620px){.v17-grid{grid-template-columns:1fr}.v17-box{padding:18px}}
+</style>
+<div id="v17-panel"><div class="v17-box"><div class="v17-head"><div><div style="font-size:10px;letter-spacing:.15em;color:#78ddff">V17 COMMAND CENTER</div><h2>Portfolio Control Room</h2></div><button class="v17-close" id="v17-close">×</button></div><div class="v17-grid"><div class="v17-card"><h3>⌨️ Navigation</h3><p>WASD / Arrow Keys — move<br>Q — Quest Log · M — Radar · V — Visual Mode<br>? — Help · Esc — close panels</p></div><div class="v17-card"><h3>📇 Contact Beacon</h3><p id="v17-email">alekhyaalli2510@gmail.com</p><div class="v17-actions"><button class="v17-btn" id="v17-copy">Copy Email</button><a class="v17-btn" href="mailto:alekhyaalli2510@gmail.com">Email ↗</a></div></div><div class="v17-card"><h3>🔗 Professional Links</h3><p>GitHub and LinkedIn access from your portfolio world.</p><div class="v17-actions"><a class="v17-btn" href="https://github.com/alekhyaalli2510" target="_blank" rel="noopener">GitHub ↗</a><a class="v17-btn" href="https://www.linkedin.com/in/alekhya-pothapola-23a2652a8/" target="_blank" rel="noopener">LinkedIn ↗</a></div></div><div class="v17-card"><h3>📄 Resume</h3><p>Open the current resume bundled with the portfolio. CGPA: 8.91 / 10.</p><div class="v17-actions"><a class="v17-btn" href="assets/Alekhya_Resume_Updated_8_91.docx" download>Download Resume</a></div></div></div><div class="v17-actions"><button class="v17-btn" id="v17-share">Share Portfolio</button><button class="v17-btn" id="v17-reset">Reset Exploration Progress</button></div></div></div>
+<button id="v17-open">⌘ COMMAND CENTER</button>
+<script>
+(()=>{const panel=document.getElementById('v17-panel'),open=document.getElementById('v17-open'),close=document.getElementById('v17-close');open.onclick=()=>panel.classList.add('open');close.onclick=()=>panel.classList.remove('open');panel.addEventListener('click',e=>{if(e.target===panel)panel.classList.remove('open')});addEventListener('keydown',e=>{if(e.key.toLowerCase()==='c')panel.classList.toggle('open');if(e.key==='Escape')panel.classList.remove('open')});
+document.getElementById('v17-copy').onclick=async()=>{try{await navigator.clipboard.writeText(document.getElementById('v17-email').textContent.trim());}catch(e){};const b=document.getElementById('v17-copy');b.textContent='✓ Copied';setTimeout(()=>b.textContent='Copy Email',1300)};
+document.getElementById('v17-share').onclick=async()=>{const data={title:'P. Alekhya — 3D Portfolio',text:'Explore P. Alekhya's interactive 3D portfolio',url:location.href};try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(location.href);alert('Portfolio link copied');}}catch(e){}};
+document.getElementById('v17-reset').onclick=()=>{if(confirm('Reset quest progress and saved exploration position?')){localStorage.removeItem('ale_quest_state');localStorage.removeItem('ale_portfolio_position');location.reload()}};
+})();
+</script>
+
+
+<style id="v19-upgrade">
+#v19-open{position:fixed;right:18px;bottom:114px;z-index:9999;border:1px solid rgba(170,120,255,.5);background:rgba(12,7,28,.8);color:#f0e5ff;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-weight:800;font-size:11px;letter-spacing:.06em}
+#v19-panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,4,14,.7);backdrop-filter:blur(13px);z-index:99999;padding:18px}
+#v19-panel.open{display:flex}.v19-box{width:min(820px,96vw);max-height:88vh;overflow:auto;border:1px solid rgba(180,130,255,.35);border-radius:24px;background:linear-gradient(145deg,rgba(13,9,31,.98),rgba(3,8,20,.98));box-shadow:0 30px 110px rgba(0,0,0,.55),0 0 55px rgba(150,80,255,.1);padding:25px;color:#f4efff}.v19-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.v19-head h2{margin:3px 0 0}.v19-close{border:0;background:transparent;color:#a9a0ba;font-size:28px;cursor:pointer}.v19-kicker{font-size:10px;letter-spacing:.16em;color:#c49cff}.v19-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.v19-stat{border:1px solid rgba(190,150,255,.15);border-radius:15px;padding:13px;background:rgba(255,255,255,.025)}.v19-stat b{display:block;font-size:18px}.v19-stat span{font-size:10px;color:#aaa0bb}.v19-bars{display:grid;gap:12px;margin-top:16px}.v19-bar{display:grid;grid-template-columns:120px 1fr 42px;align-items:center;gap:10px;font-size:11px}.v19-track{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.v19-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#67dcff,#bb83ff)}.v19-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}.v19-btn{border:1px solid rgba(190,150,255,.32);background:rgba(160,100,255,.08);color:#f2eaff;border-radius:11px;padding:10px 13px;cursor:pointer;font-weight:800;font-size:11px}.v19-btn:hover{background:rgba(160,100,255,.16)}.v19-note{margin-top:15px;color:#a99fb7;font-size:11px;line-height:1.55}
+@media(max-width:620px){.v19-stats{grid-template-columns:repeat(2,1fr)}.v19-bar{grid-template-columns:88px 1fr 36px}.v19-box{padding:18px}}
+</style>
+<div id="v19-panel"><div class="v19-box"><div class="v19-head"><div><div class="v19-kicker">V19 CAREER DASHBOARD</div><h2>Portfolio Snapshot</h2></div><button class="v19-close" id="v19-close">×</button></div><div class="v19-stats"><div class="v19-stat"><b>8.91</b><span>CGPA / 10</span></div><div class="v19-stat"><b>Python</b><span>Primary language</span></div><div class="v19-stat"><b>2</b><span>Featured projects</span></div><div class="v19-stat"><b>2026</b><span>B.Tech completion</span></div></div><div class="v19-bars"><div class="v19-bar"><span>Python</span><div class="v19-track"><div class="v19-fill" data-v="90"></div></div><b>90%</b></div><div class="v19-bar"><span>SQL</span><div class="v19-track"><div class="v19-fill" data-v="82"></div></div><b>82%</b></div><div class="v19-bar"><span>Web</span><div class="v19-track"><div class="v19-fill" data-v="78"></div></div><b>78%</b></div><div class="v19-bar"><span>Git / APIs</span><div class="v19-track"><div class="v19-fill" data-v="80"></div></div><b>80%</b></div></div><p class="v19-note">This dashboard is a visual portfolio summary, not a formal skill assessment or hiring score.</p><div class="v19-actions"><button class="v19-btn" id="v19-resume">📄 Resume</button><button class="v19-btn" id="v19-projects">💻 Projects</button><button class="v19-btn" id="v19-contact">✉ Contact</button></div></div></div>
+<button id="v19-open">◈ CAREER DASHBOARD</button>
+<script id="v19-script">(()=>{const panel=document.getElementById('v19-panel'),open=document.getElementById('v19-open'),close=document.getElementById('v19-close');function show(){panel.classList.add('open');document.querySelectorAll('.v19-fill').forEach(x=>x.style.width=x.dataset.v+'%')}open.onclick=show;close.onclick=()=>panel.classList.remove('open');panel.onclick=e=>{if(e.target===panel)panel.classList.remove('open')};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='d')show();if(e.key==='Escape')panel.classList.remove('open')});document.getElementById('v19-resume').onclick=()=>document.querySelector('[href*="Alekhya_Resume_Updated_8_91.docx"]')?.click();document.getElementById('v19-projects').onclick=()=>{const b=document.querySelector('.dest[data-dest="PROJECTS"]');if(b)b.click();panel.classList.remove('open')};document.getElementById('v19-contact').onclick=()=>{const b=document.querySelector('.dest[data-dest="CONTACT"]');if(b)b.click();panel.classList.remove('open')};})();</script>
+
+<style id="v20-upgrade">
+#v20-badge{position:fixed;top:14px;right:14px;z-index:99999;padding:8px 12px;border:1px solid rgba(120,220,255,.45);border-radius:999px;background:rgba(4,12,24,.72);backdrop-filter:blur(10px);color:#bff4ff;font:600 11px/1.1 system-ui;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 0 24px rgba(0,210,255,.12)}
+@media(max-width:700px){#v20-badge{top:auto;bottom:14px;right:14px;font-size:10px}}
+@media print{body *{visibility:hidden!important}#v20-print{visibility:visible!important;position:static!important;display:block!important;color:#111!important;background:#fff!important;padding:32px!important;font-family:Arial,sans-serif!important}#v20-print *{visibility:visible!important}.v20-no-print{display:none!important}}
+#v20-print{display:none}
+</style>
+<div id="v20-badge">V20 • Recruiter Ready</div>
+<section id="v20-print">
+<h1>P. ALEKHYA</h1><p>Computer Science & Engineering • Python • Java • SQL • REST APIs • Git/GitHub</p>
+<h2>Projects</h2><p><b>Credit Card Processing System</b> — transaction lifecycle modeling, UML, PCI-DSS, fraud detection and error handling concepts.</p><p><b>Weather Prediction App</b> — responsive HTML/CSS web app using OpenWeatherMap API with automatic location detection.</p>
+<h2>Education</h2><p>B.Tech, Computer Science and Engineering — Mohan Babu University, Tirupati • 2022–2026 • <b>CGPA 8.91/10</b></p>
+<h2>Skills</h2><p>Python, Java, SQL, HTML, CSS, REST APIs, Git, GitHub, DBMS, OOP, API Integration, UML, Debugging.</p>
+</section>
+<script>
+(()=>{
+ const print=()=>window.print();
+ window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='p'&&!e.ctrlKey&&!e.metaKey){e.preventDefault();print()}});
+})();
+</script>
+
+
+<style id="v21-upgrade">
+#v21-open{position:fixed;right:18px;top:62px;z-index:9999;border:1px solid rgba(90,235,255,.45);background:rgba(4,13,26,.78);color:#dffaff;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-weight:800;font-size:11px;letter-spacing:.06em;box-shadow:0 0 24px rgba(0,210,255,.1)}
+#v21-panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(1,5,15,.76);backdrop-filter:blur(14px);z-index:100000;padding:16px}
+#v21-panel.open{display:flex}.v21-box{width:min(940px,96vw);max-height:90vh;overflow:auto;border:1px solid rgba(100,225,255,.28);border-radius:24px;background:linear-gradient(145deg,rgba(5,17,31,.98),rgba(4,8,19,.98));box-shadow:0 30px 100px rgba(0,0,0,.6),0 0 55px rgba(0,200,255,.08);padding:24px;color:#eafaff}.v21-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.v21-kicker{font-size:10px;letter-spacing:.16em;color:#67e8ff}.v21-head h2{margin:4px 0 0}.v21-close{border:0;background:transparent;color:#9db4c5;font-size:28px;cursor:pointer}.v21-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.v21-tab{border:1px solid rgba(100,220,255,.25);background:rgba(80,210,255,.06);color:#c9f7ff;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:800;font-size:11px}.v21-tab.active{background:rgba(80,210,255,.16);border-color:rgba(100,230,255,.55)}.v21-project{display:none}.v21-project.active{display:block}.v21-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.v21-card{border:1px solid rgba(130,220,255,.14);border-radius:17px;padding:16px;background:rgba(255,255,255,.025)}.v21-card h3{margin:0 0 9px;font-size:15px}.v21-card p,.v21-card li{font-size:12px;line-height:1.55;color:#a9bdca}.v21-card ul{padding-left:18px;margin:8px 0}.v21-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.v21-node{padding:13px 8px;text-align:center;border:1px solid rgba(95,225,255,.22);border-radius:13px;background:linear-gradient(180deg,rgba(50,210,255,.09),rgba(170,100,255,.05));font-size:11px;font-weight:800}.v21-arrow{display:flex;align-items:center;justify-content:center;color:#70e9ff;font-size:18px}.v21-stack{display:grid;gap:8px}.v21-pill{display:flex;justify-content:space-between;gap:10px;padding:10px 11px;border-radius:10px;background:rgba(255,255,255,.035);font-size:11px}.v21-pill span{color:#93a9b8}.v21-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.v21-btn{border:1px solid rgba(100,220,255,.3);background:rgba(80,210,255,.07);color:#dffaff;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:800;font-size:11px}.v21-btn:hover{background:rgba(80,210,255,.14)}
+@media(max-width:700px){#v21-open{top:auto;bottom:62px;right:18px}.v21-layout{grid-template-columns:1fr}.v21-flow{grid-template-columns:1fr}.v21-arrow{transform:rotate(90deg)}}
+</style>
+<div id="v21-panel"><div class="v21-box"><div class="v21-head"><div><div class="v21-kicker">V21 PROJECT SHOWCASE LAB</div><h2>Explore the Projects</h2></div><button class="v21-close" id="v21-close">×</button></div><div class="v21-tabs"><button class="v21-tab active" data-v21="credit">💳 Credit Card Processing</button><button class="v21-tab" data-v21="weather">☁ Weather Prediction App</button></div>
+<div class="v21-project active" id="v21-credit"><div class="v21-layout"><div class="v21-card"><h3>Credit Card Processing System</h3><p>A portfolio presentation of the transaction workflow described in the resume, including authorization, processing and settlement.</p><div class="v21-flow"><div class="v21-node">Authorization</div><div class="v21-arrow">→</div><div class="v21-node">Processing</div><div class="v21-arrow">→</div><div class="v21-node">Settlement</div></div><ul><li>UML diagrams for system structure and transaction flow</li><li>PCI-DSS concepts studied for secure transaction processing</li><li>Basic fraud detection and error-handling concepts</li></ul></div><div class="v21-card"><h3>Concept Map</h3><div class="v21-stack"><div class="v21-pill"><b>Workflow</b><span>Transaction lifecycle</span></div><div class="v21-pill"><b>Design</b><span>UML modeling</span></div><div class="v21-pill"><b>Security</b><span>PCI-DSS concepts</span></div><div class="v21-pill"><b>Reliability</b><span>Error handling</span></div></div></div></div></div>
+<div class="v21-project" id="v21-weather"><div class="v21-layout"><div class="v21-card"><h3>Weather Prediction App</h3><p>A responsive weather web application using HTML, CSS and the OpenWeatherMap API to display live weather information for searched locations.</p><div class="v21-flow"><div class="v21-node">Location</div><div class="v21-arrow">→</div><div class="v21-node">API</div><div class="v21-arrow">→</div><div class="v21-node">Weather UI</div></div><ul><li>Automatic location detection</li><li>Live weather data from the API</li><li>Mobile and desktop responsive layouts</li></ul></div><div class="v21-card"><h3>Technology Map</h3><div class="v21-stack"><div class="v21-pill"><b>Frontend</b><span>HTML + CSS</span></div><div class="v21-pill"><b>API</b><span>OpenWeatherMap</span></div><div class="v21-pill"><b>UX</b><span>Location detection</span></div><div class="v21-pill"><b>Responsive</b><span>Mobile + desktop</span></div></div></div></div></div>
+<div class="v21-actions"><button class="v21-btn" id="v21-github">↗ Open GitHub</button><button class="v21-btn" id="v21-resume">📄 View Resume</button></div></div></div>
+<button id="v21-open">◈ PROJECT LAB</button>
+<script>
+(()=>{const panel=document.getElementById('v21-panel'),open=document.getElementById('v21-open'),close=document.getElementById('v21-close');
+function show(){panel.classList.add('open')} open.onclick=show;close.onclick=()=>panel.classList.remove('open');panel.onclick=e=>{if(e.target===panel)panel.classList.remove('open')};
+addEventListener('keydown',e=>{if(e.key.toLowerCase()==='l')show();if(e.key==='Escape')panel.classList.remove('open')});
+document.querySelectorAll('.v21-tab').forEach(tab=>tab.onclick=()=>{document.querySelectorAll('.v21-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.v21-project').forEach(x=>x.classList.remove('active'));tab.classList.add('active');document.getElementById('v21-'+tab.dataset.v21).classList.add('active')});
+document.getElementById('v21-github').onclick=()=>window.open('https://github.com/alekhyaalli2510','_blank','noopener');document.getElementById('v21-resume').onclick=()=>window.open('assets/Alekhya_Resume_Updated_8_91.docx','_blank');})();
+</script>
+
+<div id="v22-panel"><div class="v22-box"><div class="v22-head"><div><div class="v22-kicker">V22 CERTIFICATE VAULT</div><h2>Credentials Gallery</h2></div><button class="v22-close" id="v22-close">×</button></div><div class="v22-grid"><div class="v22-card"><img src="assets/practical-python.jpg" alt="Practical Python Programming for Beginners"><h3>Practical Python Programming for Beginners</h3><p>Alison</p></div><div class="v22-card"><img src="assets/leadership-skills.jpg" alt="Leadership Skills"><h3>Leadership Skills</h3><p>Coursera / IIMA</p></div><div class="v22-card"><img src="assets/data-analysis-python.jpg" alt="Data Analysis with Python"><h3>Data Analysis with Python</h3><p>IBM / Coursera</p></div><div class="v22-card"><img src="assets/ai-fundamentals.jpg" alt="AI Fundamentals"><h3>AI Fundamentals</h3><p>Google / Coursera</p></div><div class="v22-card"><img src="assets/machine-learning-computer-vision.jpg" alt="Machine Learning for Computer Vision"><h3>Machine Learning for Computer Vision</h3><p>MathWorks / Coursera</p></div><div class="v22-card"><img src="assets/google-data-foundations.jpg" alt="Foundations: Data, Data, Everywhere"><h3>Foundations: Data, Data, Everywhere</h3><p>Google / Coursera</p></div><div class="v22-card"><img src="assets/power-bi.jpg" alt="Mastering Power BI: Data Analysis and Dashboard Creation"><h3>Mastering Power BI: Data Analysis and Dashboard Creation</h3><p>Skill India Digital Hub</p></div><div class="v22-card"><img src="assets/python-internship.jpg" alt="Python Internship"><h3>Python Internship</h3><p>upSkill Campus / AICTE</p></div><div class="v22-card"><img src="assets/python-full-stack-internship.jpg" alt="Python Full Stack Development Internship"><h3>Python Full Stack Development Internship</h3><p>ApexPlanet Software</p></div></div><div class="v22-view">Click a certificate card to view it larger. Press <b>Y</b> anytime to open the vault.</div></div></div><script id="v22-script">(()=>{const panel=document.getElementById('v22-panel');const close=document.getElementById('v22-close');function show(){panel.classList.add('open')}close.onclick=()=>panel.classList.remove('open');panel.onclick=e=>{if(e.target===panel)panel.classList.remove('open')};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='y')show();if(e.key==='Escape')panel.classList.remove('open')});document.querySelectorAll('.v22-card').forEach(c=>c.onclick=()=>{const img=c.querySelector('img');const w=window.open('','_blank');if(w)w.document.write('<title>Certificate</title><body style="margin:0;background:#050914;display:grid;place-items:center"><img src="'+img.src+'" style="max-width:96vw;max-height:96vh">
+<!-- V23: Interview Mode -->
+<div id="interviewMode" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(3,7,18,.96);color:#fff;font-family:system-ui,Arial;padding:28px;overflow:auto">
+  <div style="max-width:900px;margin:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><div><div style="letter-spacing:.2em;font-size:12px;opacity:.7">ALEKHYA // INTERVIEW MODE</div><h1 style="margin:6px 0">Technical Interview Prep</h1><p style="opacity:.75">Quick questions based on your portfolio projects and skills.</p></div><button onclick="closeInterview()" style="padding:10px 16px;border-radius:10px;border:1px solid #6cf;background:#10223b;color:#fff">Close</button></div>
+  <div id="interviewCard" style="margin-top:24px;padding:24px;border:1px solid #294c72;border-radius:18px;background:rgba(10,20,38,.8)"></div>
+  <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><button onclick="showInterviewAnswer()" style="padding:10px 16px;border-radius:10px;border:1px solid #6cf;background:#10223b;color:#fff">Show Answer</button><button onclick="nextInterview()" style="padding:10px 16px;border-radius:10px;border:1px solid #6cf;background:#173b2a;color:#fff">Next Question</button></div>
+  </div>
+</div>
+<script>
+const interviewQs=[
+['Python','Why did you choose Python for software development?','Python has clear syntax, a large standard library, and is practical for scripting, APIs, automation, and application development.'],
+['SQL','What is the purpose of SQL?','SQL is used to create, read, update, and manage data in relational databases.'],
+['REST APIs','What is a REST API?','A REST API lets applications communicate over HTTP using resources and methods such as GET, POST, PUT, and DELETE.'],
+['Weather App','How did your Weather Prediction App use an API?','It used the OpenWeatherMap API to retrieve live weather data for searched locations and included automatic location detection.'],
+['Credit Card System','What are authorization, processing, and settlement?','They are key stages in a payment transaction lifecycle: authorization checks the transaction, processing handles the transaction flow, and settlement completes the transfer between parties.'],
+['Git','Why is Git useful?','Git tracks changes in source code, supports collaboration, and lets developers work with branches and versions safely.']
+]; let interviewIndex=0;
+function renderInterview(){const q=interviewQs[interviewIndex];document.getElementById('interviewCard').innerHTML='<div style="font-size:12px;opacity:.6">'+(interviewIndex+1)+' / '+interviewQs.length+' • '+q[0]+'</div><h2>'+q[1]+'</h2><div id="interviewAnswer" style="display:none;margin-top:18px;padding:16px;border-radius:12px;background:#071525;border-left:3px solid #6cf"><b>Suggested answer:</b><br>'+q[2]+'</div>'}
+function showInterviewAnswer(){document.getElementById('interviewAnswer').style.display='block'}
+function nextInterview(){interviewIndex=(interviewIndex+1)%interviewQs.length;renderInterview()}
+function openInterview(){document.getElementById('interviewMode').style.display='block';renderInterview()}
+function closeInterview(){document.getElementById('interviewMode').style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='i'){openInterview()}});
+</script>
+
+<div id="v27-panel"><div class="v27-box"><div class="v27-head"><div><div class="v27-k">V27 · APPLICATION KIT</div><h2>Career Launch Pad</h2><div style="opacity:.72">A compact recruiter-ready view of your resume profile.</div></div><button class="v27-close" id="v27-close">×</button></div><div class="v27-grid" style="margin-top:18px"><div class="v27-card"><b>Target Profile</b>Entry-level Software Development / Python Development</div><div class="v27-card"><b>Core Skills</b>Python · Java · SQL · HTML · CSS · REST APIs · Git/GitHub</div><div class="v27-card"><b>Academic Projects</b>Credit Card Processing System · Weather Prediction App</div><div class="v27-card"><b>Core Concepts</b>OOP · DBMS · API Integration · UML · Debugging · Error Handling</div><div class="v27-card"><b>Education</b>B.Tech CSE · Mohan Babu University · 2022–2026</div><div class="v27-card"><b>Academic Score</b>CGPA 8.91 / 10</div></div><div class="v27-actions"><button id="v27-resume">📄 Open Resume</button><button id="v27-projects">💻 Open Projects</button><button id="v27-contact">✉️ Contact</button><button id="v27-copy">📋 Copy Profile</button></div><div class="v27-note">Press <b>G</b> anytime to open the Career Launch Pad.</div></div></div>
+<script id="v27-script">(()=>{const p=document.getElementById('v27-panel'),c=document.getElementById('v27-close');const show=()=>p.style.display='flex',hide=()=>p.style.display='none';c.onclick=hide;p.onclick=e=>{if(e.target===p)hide()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='g')show();if(e.key==='Escape')hide()});document.getElementById('v27-resume').onclick=()=>window.open('assets/Alekhya_Resume_Updated_8_91.docx','_blank');document.getElementById('v27-projects').onclick=()=>{const b=document.querySelector('#v21-open');if(b)b.click();hide()};document.getElementById('v27-contact').onclick=()=>{const b=document.querySelector('.dest[data-dest="CONTACT"]');if(b)b.click();hide()};document.getElementById('v27-copy').onclick=async()=>{const t='P. ALEKHYA — CSE Graduate | Python, Java, SQL, HTML, CSS, REST APIs, Git/GitHub | B.Tech CSE, Mohan Babu University | CGPA 8.91/10 | Projects: Credit Card Processing System, Weather Prediction App';try{await navigator.clipboard.writeText(t);alert('Profile summary copied.')}catch(e){alert(t)}}})();</script>
+
+<style id="v28-style">
+#v28-hub{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,4,12,.82);backdrop-filter:blur(12px);z-index:99999;font-family:Inter,system-ui,sans-serif;color:#fff}
+#v28-card{width:min(720px,92vw);padding:28px;border:1px solid rgba(120,220,255,.35);border-radius:24px;background:linear-gradient(145deg,rgba(10,18,38,.96),rgba(20,8,42,.94));box-shadow:0 0 60px rgba(0,220,255,.16)}
+#v28-card h2{margin:0 0 8px;font-size:28px}.v28-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}.v28-item{padding:16px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}.v28-item b{display:block;margin-bottom:5px}.v28-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.v28-btn{padding:10px 15px;border-radius:12px;border:1px solid rgba(120,220,255,.35);background:rgba(120,220,255,.1);color:#fff;cursor:pointer}.v28-close{float:right}.v28-note{opacity:.7;font-size:13px;margin-top:12px}@media(max-width:600px){.v28-grid{grid-template-columns:1fr}}
+</style>
+<div id="v28-hub" aria-hidden="true"><div id="v28-card"><button class="v28-btn v28-close" onclick="v28Close()">Close</button><h2>🌐 Personal Contact Hub</h2><div style="opacity:.75">One compact place to share Alekhya's professional profile.</div><div class="v28-grid"><div class="v28-item"><b>👩‍💻 P. ALEKHYA</b>Computer Science & Engineering</div><div class="v28-item"><b>🎓 Education</b>Mohan Babu University · CGPA 8.91/10</div><div class="v28-item"><b>🐍 Core Skills</b>Python · Java · SQL · HTML/CSS</div><div class="v28-item"><b>🔗 Tools</b>Git · GitHub · REST APIs · OpenWeatherMap API</div></div><div class="v28-actions"><button class="v28-btn" onclick="v28Copy()">Copy Profile</button><button class="v28-btn" onclick="v28Mail()">Email</button><button class="v28-btn" onclick="v28Git()">GitHub</button></div><div class="v28-note">Press H to open this hub.</div></div></div>
+<script>
+function v28Open(){const e=document.getElementById('v28-hub');if(e){e.style.display='flex';e.setAttribute('aria-hidden','false')}}
+function v28Close(){const e=document.getElementById('v28-hub');if(e){e.style.display='none';e.setAttribute('aria-hidden','true')}}
+function v28Copy(){const t='P. ALEKHYA — Computer Science & Engineering | Python, Java, SQL, HTML/CSS, REST APIs, Git/GitHub | B.Tech CSE, Mohan Babu University | CGPA 8.91/10';navigator.clipboard?.writeText(t);}
+function v28Mail(){location.href='mailto:alekhyaalli250@gmail.com'}
+function v28Git(){window.open('https://github.com/alekhyaalli2510','_blank')}
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='h'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){const x=document.getElementById('v28-hub'); if(x?.style.display==='flex')v28Close();else v28Open()}});
+</script>
+
+
+<style id="v31-health-css">#v31-panel{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:#02050be8;backdrop-filter:blur(14px);padding:18px}#v31-panel.open{display:grid}.v31-box{width:min(760px,96vw);max-height:86vh;overflow:auto;background:#07111e;border:1px solid #8be8ff35;border-radius:24px;padding:22px;box-shadow:0 30px 100px #000b}.v31-head{display:flex;justify-content:space-between;align-items:center}.v31-title{font-size:clamp(24px,5vw,42px);font-weight:900}.v31-sub{color:#9fb1c7;font-size:12px;margin-top:5px}.v31-close{width:38px;height:38px;border-radius:50%;border:1px solid #ffffff25;background:#ffffff09;color:#fff;font-size:20px;cursor:pointer}.v31-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:18px}.v31-item{border:1px solid #ffffff15;background:#ffffff06;border-radius:16px;padding:14px}.v31-item b{display:block;font-size:12px;margin-bottom:7px}.v31-status{font-size:11px;color:#9fb1c7}.v31-ok{color:#78f5bd}.v31-warn{color:#ffd37a}.v31-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.v31-btn{padding:9px 13px;border-radius:999px;border:1px solid #8be8ff35;background:#ffffff09;color:#fff;cursor:pointer}.v31-bar{height:7px;border-radius:999px;background:#ffffff0b;overflow:hidden;margin-top:12px}.v31-fill{height:100%;width:0;background:#78eaff;transition:width .4s}.v31-note{font-size:10px;color:#8192a8;margin-top:12px}</style>
+
+<div id="v31-panel"><div class="v31-box"><div class="v31-head"><div><div class="v31-sub">V31 PORTFOLIO DIAGNOSTICS</div><div class="v31-title">World Health Check</div><div class="v31-sub">Quickly verify the portfolio assets before sharing it.</div></div><button class="v31-close" id="v31-close">×</button></div><div class="v31-bar"><div class="v31-fill" id="v31-fill"></div></div><div class="v31-grid" id="v31-grid"></div><div class="v31-actions"><button class="v31-btn" id="v31-run">Run Check</button><button class="v31-btn" id="v31-copy">Copy Report</button><button class="v31-btn" id="v31-share">Share Portfolio</button></div><div class="v31-note">Press <b>X</b> to open. Checks run locally in your browser; no data is uploaded.</div></div></div>
+<script id="v31-script">(()=>{const panel=document.getElementById('v31-panel'),grid=document.getElementById('v31-grid'),fill=document.getElementById('v31-fill');const assets=[['Portfolio page','index.html'],['Resume','assets/Alekhya_Resume_Updated_8_91.docx'],['Profile image','assets/profile.jpg'],['Python certificate','assets/practical-python.jpg'],['Data Analysis certificate','assets/data-analysis-python.jpg'],['Power BI certificate','assets/power-bi.jpg'],['Python internship certificate','assets/python-internship.jpg']];let last=[];function show(){panel.classList.add('open');run()}function hide(){panel.classList.remove('open')}function test(url){return fetch(url,{method:'HEAD',cache:'no-store'}).then(r=>r.ok).catch(()=>false)}async function run(){grid.innerHTML='';last=[];fill.style.width='5%';for(let i=0;i<assets.length;i++){const [name,url]=assets[i];const ok=await test(url);last.push({name,url,ok});const d=document.createElement('div');d.className='v31-item';d.innerHTML='<b>'+name+'</b><div class="v31-status '+(ok?'v31-ok':'v31-warn')+'">'+(ok?'✓ Available':'! Check file')+'</div><div class="v31-status">'+url+'</div>';grid.appendChild(d);fill.style.width=Math.round(((i+1)/assets.length)*100)+'%'}}document.getElementById('v31-run').onclick=run;document.getElementById('v31-copy').onclick=async()=>{const t='Alekhya Portfolio Health Check\n'+last.map(x=>(x.ok?'OK':'CHECK')+' — '+x.name+' — '+x.url).join('\n');try{await navigator.clipboard.writeText(t);alert('Report copied.')}catch(e){alert(t)}};document.getElementById('v31-share').onclick=async()=>{const data={title:'P. Alekhya — 3D Portfolio',text:'Explore my interactive 3D portfolio.',url:location.href};if(navigator.share){try{await navigator.share(data)}catch(e){}}else{try{await navigator.clipboard.writeText(location.href);alert('Portfolio link copied.')}catch(e){alert(location.href)}}};document.getElementById('v31-close').onclick=hide;panel.onclick=e=>{if(e.target===panel)hide()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='x'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){panel.classList.contains('open')?hide():show()}if(e.key==='Escape')hide()})})();</script>
+<style id="v32-share-css">#v32-panel{position:fixed;inset:0;z-index:101;display:none;place-items:center;background:#02050be8;backdrop-filter:blur(16px);padding:18px}#v32-panel.open{display:grid}.v32-box{width:min(720px,96vw);max-height:88vh;overflow:auto;background:#07111e;border:1px solid #8be8ff35;border-radius:26px;padding:24px;box-shadow:0 30px 100px #000b}.v32-head{display:flex;justify-content:space-between;align-items:center}.v32-title{font-size:clamp(26px,5vw,44px);font-weight:900}.v32-sub{color:#9fb1c7;font-size:12px;margin-top:5px}.v32-close{width:38px;height:38px;border-radius:50%;border:1px solid #ffffff25;background:#ffffff09;color:#fff;font-size:20px;cursor:pointer}.v32-card{margin-top:20px;border:1px solid #8be8ff30;border-radius:22px;padding:22px;background:linear-gradient(135deg,#0b1b2d,#07111e);position:relative;overflow:hidden}.v32-card:after{content:'AP';position:absolute;right:-18px;top:-32px;font-size:150px;font-weight:1000;color:#8be8ff08}.v32-name{font-size:30px;font-weight:900}.v32-role{color:#78eaff;margin-top:4px}.v32-line{height:1px;background:#ffffff12;margin:16px 0}.v32-tags{display:flex;flex-wrap:wrap;gap:7px}.v32-tag{font-size:11px;padding:6px 9px;border-radius:999px;background:#ffffff09;border:1px solid #ffffff14}.v32-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.v32-btn{padding:10px 14px;border-radius:999px;border:1px solid #8be8ff35;background:#ffffff09;color:#fff;cursor:pointer}.v32-note{font-size:10px;color:#8192a8;margin-top:13px}</style><div id="v32-panel"><div class="v32-box"><div class="v32-head"><div><div class="v32-sub">V32 SHARE STATION</div><div class="v32-title">Recruiter Share Card</div><div class="v32-sub">A compact profile card you can copy or print.</div></div><button class="v32-close" id="v32-close">×</button></div><div class="v32-card" id="v32-card"><div class="v32-name">P. ALEKHYA</div><div class="v32-role">Computer Science & Engineering · Python Developer</div><div class="v32-line"></div><div><b>Education</b><div class="v32-sub">B.Tech CSE · Mohan Babu University · 2022–2026 · CGPA 8.91/10</div></div><div class="v32-line"></div><div><b>Skills</b><div class="v32-tags"><span class="v32-tag">Python</span><span class="v32-tag">Java</span><span class="v32-tag">SQL</span><span class="v32-tag">HTML/CSS</span><span class="v32-tag">REST APIs</span><span class="v32-tag">Git/GitHub</span></div></div><div class="v32-line"></div><div><b>Projects</b><div class="v32-sub">Credit Card Processing System · Weather Prediction App</div></div></div><div class="v32-actions"><button class="v32-btn" id="v32-copy">Copy Profile</button><button class="v32-btn" id="v32-print">Print Card</button><button class="v32-btn" id="v32-share">Share</button></div><div class="v32-note">Press <b>S</b> to open Share Station.</div></div></div><script id="v32-script">(()=>{const panel=document.getElementById('v32-panel');const close=()=>panel.classList.remove('open');const show=()=>panel.classList.add('open');const profile='P. ALEKHYA — Computer Science & Engineering | Python Developer\nB.Tech CSE, Mohan Babu University, 2022–2026 | CGPA 8.91/10\nSkills: Python, Java, SQL, HTML/CSS, REST APIs, Git/GitHub\nProjects: Credit Card Processing System; Weather Prediction App';document.getElementById('v32-close').onclick=close;document.getElementById('v32-copy').onclick=async()=>{try{await navigator.clipboard.writeText(profile);alert('Profile copied.')}catch(e){alert(profile)}};document.getElementById('v32-print').onclick=()=>{const w=window.open('','_blank','width=760,height=760');if(!w)return;w.document.write('<!doctype html><html><head><title>Alekhya Profile</title><style>body{font-family:Arial;padding:40px}h1{margin-bottom:4px}p{line-height:1.6}.tag{display:inline-block;border:1px solid #aaa;border-radius:20px;padding:7px 10px;margin:4px}</style></head><body><h1>P. ALEKHYA</h1><p><b>Computer Science & Engineering · Python Developer</b></p><p>B.Tech CSE, Mohan Babu University · 2022–2026 · CGPA 8.91/10</p><p><b>Skills</b></p><div><span class="tag">Python</span><span class="tag">Java</span><span class="tag">SQL</span><span class="tag">HTML/CSS</span><span class="tag">REST APIs</span><span class="tag">Git/GitHub</span></div><p><b>Projects</b><br>Credit Card Processing System<br>Weather Prediction App</p></body></html>');w.document.close();w.focus();w.print()};document.getElementById('v32-share').onclick=async()=>{if(navigator.share){try{await navigator.share({title:'P. Alekhya — 3D Portfolio',text:profile,url:location.href})}catch(e){}}else{try{await navigator.clipboard.writeText(location.href);alert('Portfolio link copied.')}catch(e){alert(location.href)}}};panel.onclick=e=>{if(e.target===panel)close()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='s'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){panel.classList.contains('open')?close():show()}if(e.key==='Escape')close()})})();</script></body>')});})();</script>
+<!-- V23: Interview Mode -->
+<div id="interviewMode" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(3,7,18,.96);color:#fff;font-family:system-ui,Arial;padding:28px;overflow:auto">
+  <div style="max-width:900px;margin:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><div><div style="letter-spacing:.2em;font-size:12px;opacity:.7">ALEKHYA // INTERVIEW MODE</div><h1 style="margin:6px 0">Technical Interview Prep</h1><p style="opacity:.75">Quick questions based on your portfolio projects and skills.</p></div><button onclick="closeInterview()" style="padding:10px 16px;border-radius:10px;border:1px solid #6cf;background:#10223b;color:#fff">Close</button></div>
+  <div id="interviewCard" style="margin-top:24px;padding:24px;border:1px solid #294c72;border-radius:18px;background:rgba(10,20,38,.8)"></div>
+  <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><button onclick="showInterviewAnswer()" style="padding:10px 16px;border-radius:10px;border:1px solid #6cf;background:#10223b;color:#fff">Show Answer</button><button onclick="nextInterview()" style="padding:10px 16px;border-radius:10px;border:1px solid #6cf;background:#173b2a;color:#fff">Next Question</button></div>
+  </div>
+</div>
+<script>
+const interviewQs=[
+['Python','Why did you choose Python for software development?','Python has clear syntax, a large standard library, and is practical for scripting, APIs, automation, and application development.'],
+['SQL','What is the purpose of SQL?','SQL is used to create, read, update, and manage data in relational databases.'],
+['REST APIs','What is a REST API?','A REST API lets applications communicate over HTTP using resources and methods such as GET, POST, PUT, and DELETE.'],
+['Weather App','How did your Weather Prediction App use an API?','It used the OpenWeatherMap API to retrieve live weather data for searched locations and included automatic location detection.'],
+['Credit Card System','What are authorization, processing, and settlement?','They are key stages in a payment transaction lifecycle: authorization checks the transaction, processing handles the transaction flow, and settlement completes the transfer between parties.'],
+['Git','Why is Git useful?','Git tracks changes in source code, supports collaboration, and lets developers work with branches and versions safely.']
+]; let interviewIndex=0;
+function renderInterview(){const q=interviewQs[interviewIndex];document.getElementById('interviewCard').innerHTML='<div style="font-size:12px;opacity:.6">'+(interviewIndex+1)+' / '+interviewQs.length+' • '+q[0]+'</div><h2>'+q[1]+'</h2><div id="interviewAnswer" style="display:none;margin-top:18px;padding:16px;border-radius:12px;background:#071525;border-left:3px solid #6cf"><b>Suggested answer:</b><br>'+q[2]+'</div>'}
+function showInterviewAnswer(){document.getElementById('interviewAnswer').style.display='block'}
+function nextInterview(){interviewIndex=(interviewIndex+1)%interviewQs.length;renderInterview()}
+function openInterview(){document.getElementById('interviewMode').style.display='block';renderInterview()}
+function closeInterview(){document.getElementById('interviewMode').style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='i'){openInterview()}});
+</script>
+
+<style id="v24-style">
+#v24-open{position:fixed;right:18px;top:104px;z-index:9999;border:1px solid rgba(100,230,255,.42);background:rgba(4,13,26,.82);color:#e8fbff;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-weight:800;font-size:11px;letter-spacing:.06em;box-shadow:0 0 24px rgba(0,210,255,.12)}
+#v24-panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(1,5,15,.8);backdrop-filter:blur(14px);z-index:100001;padding:16px}
+#v24-panel.open{display:flex}.v24-box{width:min(940px,96vw);max-height:90vh;overflow:auto;border:1px solid rgba(100,225,255,.28);border-radius:24px;background:linear-gradient(145deg,rgba(5,17,31,.98),rgba(4,8,19,.98));box-shadow:0 30px 100px rgba(0,0,0,.65),0 0 55px rgba(0,200,255,.08);padding:24px;color:#eafaff}.v24-head{display:flex;justify-content:space-between;align-items:center}.v24-kicker{font-size:10px;letter-spacing:.16em;color:#67e8ff}.v24-close{border:0;background:transparent;color:#9db4c5;font-size:28px;cursor:pointer}.v24-sub{color:#9eb2c0;font-size:12px;line-height:1.55}.v24-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}.v24-card{border:1px solid rgba(130,220,255,.14);border-radius:16px;padding:15px;background:rgba(255,255,255,.025)}.v24-card h3{margin:0 0 9px;font-size:14px}.v24-row{display:grid;grid-template-columns:105px 1fr 42px;align-items:center;gap:10px;margin:10px 0;font-size:11px}.v24-bar{height:8px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}.v24-fill{height:100%;width:0;background:linear-gradient(90deg,#58e4ff,#a979ff);border-radius:99px;transition:width .8s ease}.v24-note{margin-top:16px;padding:12px;border-radius:12px;background:rgba(90,220,255,.05);border:1px solid rgba(90,220,255,.12);font-size:11px;color:#a8bcc8}.v24-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.v24-btn{border:1px solid rgba(100,220,255,.3);background:rgba(80,210,255,.07);color:#dffaff;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:800;font-size:11px}.v24-btn:hover{background:rgba(80,210,255,.14)}
+@media(max-width:700px){#v24-open{top:auto;bottom:112px;right:18px}.v24-grid{grid-template-columns:1fr}.v24-row{grid-template-columns:90px 1fr 35px}}
+</style>
+<div id="v24-panel"><div class="v24-box"><div class="v24-head"><div><div class="v24-kicker">V24 SKILL MATRIX</div><h2>Technical Skills Map</h2></div><button class="v24-close" id="v24-close">×</button></div><p class="v24-sub">A visual summary of the technical areas listed in Alekhya's portfolio/resume. The bars are presentation indicators, not test scores or proficiency certifications.</p><div class="v24-grid"><div class="v24-card"><h3>Programming</h3><div class="v24-row"><b>Python</b><div class="v24-bar"><div class="v24-fill" data-v="92"></div></div><span>Core</span></div><div class="v24-row"><b>Java</b><div class="v24-bar"><div class="v24-fill" data-v="72"></div></div><span>Core</span></div><div class="v24-row"><b>SQL</b><div class="v24-bar"><div class="v24-fill" data-v="82"></div></div><span>Core</span></div></div><div class="v24-card"><h3>Web & APIs</h3><div class="v24-row"><b>HTML/CSS</b><div class="v24-bar"><div class="v24-fill" data-v="84"></div></div><span>Web</span></div><div class="v24-row"><b>REST APIs</b><div class="v24-bar"><div class="v24-fill" data-v="80"></div></div><span>API</span></div><div class="v24-row"><b>OpenWeatherMap</b><div class="v24-bar"><div class="v24-fill" data-v="76"></div></div><span>API</span></div></div><div class="v24-card"><h3>Development Tools</h3><div class="v24-row"><b>Git</b><div class="v24-bar"><div class="v24-fill" data-v="80"></div></div><span>Tool</span></div><div class="v24-row"><b>GitHub</b><div class="v24-bar"><div class="v24-fill" data-v="82"></div></div><span>Tool</span></div><div class="v24-row"><b>Debugging</b><div class="v24-bar"><div class="v24-fill" data-v="74"></div></div><span>Core</span></div></div><div class="v24-card"><h3>CS Concepts</h3><div class="v24-row"><b>OOP</b><div class="v24-bar"><div class="v24-fill" data-v="82"></div></div><span>Core</span></div><div class="v24-row"><b>DBMS</b><div class="v24-bar"><div class="v24-fill" data-v="78"></div></div><span>Core</span></div><div class="v24-row"><b>UML</b><div class="v24-bar"><div class="v24-fill" data-v="70"></div></div><span>Design</span></div></div></div><div class="v24-note">Tip: Use this panel as a quick recruiter-friendly skills overview. For detailed evidence, open the Projects Lab, Interview Mode, certificates, or resume.</div><div class="v24-actions"><button class="v24-btn" id="v24-projects">◈ Open Projects</button><button class="v24-btn" id="v24-resume">📄 Open Resume</button></div></div></div><button id="v24-open">⌘ SKILL MATRIX</button>
+<script id="v24-script">(()=>{const p=document.getElementById('v24-panel'),o=document.getElementById('v24-open'),c=document.getElementById('v24-close');function show(){p.classList.add('open');setTimeout(()=>document.querySelectorAll('.v24-fill').forEach(x=>x.style.width=x.dataset.v+'%'),40)}function hide(){p.classList.remove('open')}o.onclick=show;c.onclick=hide;p.onclick=e=>{if(e.target===p)hide()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='k')show();if(e.key==='Escape')hide()});document.getElementById('v24-projects').onclick=()=>{const b=document.querySelector('#v21-open');if(b)b.click();hide()};document.getElementById('v24-resume').onclick=()=>window.open('assets/Alekhya_Resume_Updated_8_91.docx','_blank');})();</script>
+
+
+<style id="v26-style">
+#v26-open{position:fixed;right:18px;top:146px;z-index:10000;border:1px solid rgba(255,200,100,.45);background:rgba(20,14,5,.82);color:#fff4d8;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-weight:900;font-size:11px;letter-spacing:.06em;box-shadow:0 0 24px rgba(255,190,80,.12)}
+#v26-panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,5,12,.82);backdrop-filter:blur(14px);z-index:100002;padding:16px}
+#v26-panel.open{display:flex}.v26-box{width:min(980px,96vw);max-height:90vh;overflow:auto;border:1px solid rgba(255,210,120,.28);border-radius:24px;background:linear-gradient(145deg,rgba(18,15,10,.98),rgba(5,9,18,.98));box-shadow:0 30px 100px #000b,0 0 55px rgba(255,190,80,.08);padding:24px;color:#fffaf0}.v26-head{display:flex;justify-content:space-between;align-items:center}.v26-kicker{font-size:10px;letter-spacing:.18em;color:#ffd37a}.v26-close{border:0;background:transparent;color:#b9aa8b;font-size:28px;cursor:pointer}.v26-sub{color:#b9b0a0;font-size:12px;line-height:1.55}.v26-timeline{position:relative;margin:24px 0 8px;padding-left:28px}.v26-timeline:before{content:"";position:absolute;left:8px;top:5px;bottom:5px;width:2px;background:linear-gradient(#ffd37a,#6fe7ff)}.v26-step{position:relative;margin:0 0 15px;padding:15px 16px;border:1px solid rgba(255,210,120,.14);border-radius:16px;background:rgba(255,255,255,.025);cursor:pointer;transition:.2s}.v26-step:hover,.v26-step.active{border-color:rgba(255,210,120,.42);transform:translateX(3px);background:rgba(255,210,120,.05)}.v26-dot{position:absolute;left:-28px;top:18px;width:14px;height:14px;border-radius:50%;background:#ffd37a;box-shadow:0 0 18px rgba(255,210,120,.45);border:3px solid #090c13}.v26-year{font-size:10px;color:#ffd37a;letter-spacing:.12em;font-weight:900}.v26-step h3{margin:5px 0 5px;font-size:15px}.v26-step p{margin:0;color:#b8b1a3;font-size:12px;line-height:1.5}.v26-detail{margin-top:12px;padding:14px;border-radius:14px;background:rgba(110,220,255,.04);border:1px solid rgba(110,220,255,.12);color:#bfd1dc;font-size:12px;line-height:1.55}.v26-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.v26-btn{border:1px solid rgba(255,210,120,.3);background:rgba(255,210,120,.07);color:#fff4d8;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:800;font-size:11px}.v26-btn:hover{background:rgba(255,210,120,.14)}
+@media(max-width:700px){#v26-open{top:auto;bottom:162px;right:18px}.v26-box{padding:18px}.v26-timeline{padding-left:24px}.v26-timeline:before{left:7px}.v26-dot{left:-24px}}
+</style>
+<div id="v26-panel"><div class="v26-box"><div class="v26-head"><div><div class="v26-kicker">V26 CAREER JOURNEY</div><h2>My Learning & Project Story</h2></div><button class="v26-close" id="v26-close">×</button></div><p class="v26-sub">A compact timeline built from the education, projects, skills and credentials represented in the current portfolio materials.</p><div class="v26-timeline">
+<div class="v26-step active" data-detail="B.Tech in Computer Science and Engineering at Mohan Babu University, Tirupati, 2022–2026. Current portfolio record: CGPA 8.91 / 10."><span class="v26-dot"></span><div class="v26-year">2022 — 2026</div><h3>🎓 Computer Science & Engineering</h3><p>Mohan Babu University · Tirupati</p></div>
+<div class="v26-step" data-detail="Credit Card Processing System: modeled authorization, processing and settlement; used UML planning; explored PCI-DSS, basic fraud detection and error handling concepts."><span class="v26-dot"></span><div class="v26-year">PROJECT</div><h3>💳 Credit Card Processing System</h3><p>Payment workflow + UML + secure processing concepts</p></div>
+<div class="v26-step" data-detail="Weather Prediction App: responsive HTML/CSS application using the OpenWeatherMap API, live weather data, automatic location detection and mobile/desktop layouts."><span class="v26-dot"></span><div class="v26-year">PROJECT</div><h3>☁ Weather Prediction App</h3><p>Responsive web development + API integration</p></div>
+<div class="v26-step" data-detail="Technical foundation represented in the portfolio: Python, Java, SQL, HTML, CSS, REST APIs, Git/GitHub, OOP, DBMS, API integration, UML, debugging and error handling."><span class="v26-dot"></span><div class="v26-year">SKILLS</div><h3>🛠️ Development Toolkit</h3><p>Programming · Web · APIs · Tools · CS concepts</p></div>
+<div class="v26-step" data-detail="Credentials shown in the portfolio include Practical Python Programming for Beginners, Data Analysis with Python, Power BI, Python Internship, Python Full Stack Development Internship and other supplied certificates."><span class="v26-dot"></span><div class="v26-year">CREDENTIALS</div><h3>🏆 Certifications & Internships</h3><p>Python · Data · Power BI · Internship credentials</p></div>
+</div><div class="v26-detail" id="v26-detail"></div><div class="v26-actions"><button class="v26-btn" id="v26-resume">📄 Open Resume</button><button class="v26-btn" id="v26-projects">◈ Open Projects</button><button class="v26-btn" id="v26-contact">✉ Contact</button></div></div></div><button id="v26-open">◈ CAREER JOURNEY</button>
+<script id="v26-script">(()=>{const panel=document.getElementById('v26-panel'),open=document.getElementById('v26-open'),close=document.getElementById('v26-close'),detail=document.getElementById('v26-detail'),steps=[...document.querySelectorAll('.v26-step')];function select(x){steps.forEach(s=>s.classList.remove('active'));x.classList.add('active');detail.textContent=x.dataset.detail}function show(){panel.classList.add('open');select(steps[0])}function hide(){panel.classList.remove('open')}open.onclick=show;close.onclick=hide;panel.onclick=e=>{if(e.target===panel)hide()};steps.forEach(s=>s.onclick=()=>select(s));addEventListener('keydown',e=>{if(e.key.toLowerCase()==='j')show();if(e.key==='Escape')hide()});document.getElementById('v26-resume').onclick=()=>window.open('assets/Alekhya_Resume_Updated_8_91.docx','_blank');document.getElementById('v26-projects').onclick=()=>{const b=document.querySelector('#v21-open');if(b)b.click();hide()};document.getElementById('v26-contact').onclick=()=>{const b=document.querySelector('.dest[data-dest="CONTACT"]');if(b)b.click();hide()};})();</script>
+
+
+<div id="v27-panel"><div class="v27-box"><div class="v27-head"><div><div class="v27-k">V27 · APPLICATION KIT</div><h2>Career Launch Pad</h2><div style="opacity:.72">A compact recruiter-ready view of your resume profile.</div></div><button class="v27-close" id="v27-close">×</button></div><div class="v27-grid" style="margin-top:18px"><div class="v27-card"><b>Target Profile</b>Entry-level Software Development / Python Development</div><div class="v27-card"><b>Core Skills</b>Python · Java · SQL · HTML · CSS · REST APIs · Git/GitHub</div><div class="v27-card"><b>Academic Projects</b>Credit Card Processing System · Weather Prediction App</div><div class="v27-card"><b>Core Concepts</b>OOP · DBMS · API Integration · UML · Debugging · Error Handling</div><div class="v27-card"><b>Education</b>B.Tech CSE · Mohan Babu University · 2022–2026</div><div class="v27-card"><b>Academic Score</b>CGPA 8.91 / 10</div></div><div class="v27-actions"><button id="v27-resume">📄 Open Resume</button><button id="v27-projects">💻 Open Projects</button><button id="v27-contact">✉️ Contact</button><button id="v27-copy">📋 Copy Profile</button></div><div class="v27-note">Press <b>G</b> anytime to open the Career Launch Pad.</div></div></div>
+<script id="v27-script">(()=>{const p=document.getElementById('v27-panel'),c=document.getElementById('v27-close');const show=()=>p.style.display='flex',hide=()=>p.style.display='none';c.onclick=hide;p.onclick=e=>{if(e.target===p)hide()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='g')show();if(e.key==='Escape')hide()});document.getElementById('v27-resume').onclick=()=>window.open('assets/Alekhya_Resume_Updated_8_91.docx','_blank');document.getElementById('v27-projects').onclick=()=>{const b=document.querySelector('#v21-open');if(b)b.click();hide()};document.getElementById('v27-contact').onclick=()=>{const b=document.querySelector('.dest[data-dest="CONTACT"]');if(b)b.click();hide()};document.getElementById('v27-copy').onclick=async()=>{const t='P. ALEKHYA — CSE Graduate | Python, Java, SQL, HTML, CSS, REST APIs, Git/GitHub | B.Tech CSE, Mohan Babu University | CGPA 8.91/10 | Projects: Credit Card Processing System, Weather Prediction App';try{await navigator.clipboard.writeText(t);alert('Profile summary copied.')}catch(e){alert(t)}}})();</script>
+
+<style id="v28-style">
+#v28-hub{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,4,12,.82);backdrop-filter:blur(12px);z-index:99999;font-family:Inter,system-ui,sans-serif;color:#fff}
+#v28-card{width:min(720px,92vw);padding:28px;border:1px solid rgba(120,220,255,.35);border-radius:24px;background:linear-gradient(145deg,rgba(10,18,38,.96),rgba(20,8,42,.94));box-shadow:0 0 60px rgba(0,220,255,.16)}
+#v28-card h2{margin:0 0 8px;font-size:28px}.v28-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}.v28-item{padding:16px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}.v28-item b{display:block;margin-bottom:5px}.v28-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.v28-btn{padding:10px 15px;border-radius:12px;border:1px solid rgba(120,220,255,.35);background:rgba(120,220,255,.1);color:#fff;cursor:pointer}.v28-close{float:right}.v28-note{opacity:.7;font-size:13px;margin-top:12px}@media(max-width:600px){.v28-grid{grid-template-columns:1fr}}
+</style>
+<div id="v28-hub" aria-hidden="true"><div id="v28-card"><button class="v28-btn v28-close" onclick="v28Close()">Close</button><h2>🌐 Personal Contact Hub</h2><div style="opacity:.75">One compact place to share Alekhya's professional profile.</div><div class="v28-grid"><div class="v28-item"><b>👩‍💻 P. ALEKHYA</b>Computer Science & Engineering</div><div class="v28-item"><b>🎓 Education</b>Mohan Babu University · CGPA 8.91/10</div><div class="v28-item"><b>🐍 Core Skills</b>Python · Java · SQL · HTML/CSS</div><div class="v28-item"><b>🔗 Tools</b>Git · GitHub · REST APIs · OpenWeatherMap API</div></div><div class="v28-actions"><button class="v28-btn" onclick="v28Copy()">Copy Profile</button><button class="v28-btn" onclick="v28Mail()">Email</button><button class="v28-btn" onclick="v28Git()">GitHub</button></div><div class="v28-note">Press H to open this hub.</div></div></div>
+<script>
+function v28Open(){const e=document.getElementById('v28-hub');if(e){e.style.display='flex';e.setAttribute('aria-hidden','false')}}
+function v28Close(){const e=document.getElementById('v28-hub');if(e){e.style.display='none';e.setAttribute('aria-hidden','true')}}
+function v28Copy(){const t='P. ALEKHYA — Computer Science & Engineering | Python, Java, SQL, HTML/CSS, REST APIs, Git/GitHub | B.Tech CSE, Mohan Babu University | CGPA 8.91/10';navigator.clipboard?.writeText(t);}
+function v28Mail(){location.href='mailto:alekhyaalli250@gmail.com'}
+function v28Git(){window.open('https://github.com/alekhyaalli2510','_blank')}
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='h'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){const x=document.getElementById('v28-hub'); if(x?.style.display==='flex')v28Close();else v28Open()}});
+</script>
+
+
+<style id="v29-style">
+#v29-tour{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(1,5,14,.82);backdrop-filter:blur(14px);z-index:100010;color:#fff;font-family:Inter,system-ui,sans-serif}
+#v29-tour.open{display:flex}.v29-box{width:min(760px,94vw);padding:28px;border:1px solid rgba(110,230,255,.32);border-radius:24px;background:linear-gradient(145deg,rgba(6,18,32,.98),rgba(12,8,34,.97));box-shadow:0 30px 100px #000b,0 0 60px rgba(70,220,255,.1)}
+.v29-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}.v29-k{font-size:10px;letter-spacing:.22em;color:#79e8ff;font-weight:900}.v29-box h2{margin:7px 0;font-size:30px}.v29-sub{color:#aebfd1;font-size:12px;line-height:1.6}.v29-progress{height:6px;background:#ffffff10;border-radius:99px;overflow:hidden;margin:20px 0}.v29-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#63e6ff,#b77cff);transition:.35s}.v29-stage{padding:20px;border:1px solid #ffffff14;border-radius:18px;background:#ffffff06;min-height:170px}.v29-stage .num{font-size:10px;color:#79e8ff;letter-spacing:.14em}.v29-stage h3{margin:8px 0;font-size:22px}.v29-stage p{color:#b9c8d8;line-height:1.6;font-size:13px}.v29-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.v29-tag{padding:6px 9px;border-radius:999px;background:#ffffff09;border:1px solid #ffffff14;font-size:10px}.v29-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.v29-btn{border:1px solid #78e7ff38;background:#78e7ff0d;color:#fff;border-radius:11px;padding:10px 14px;cursor:pointer;font-weight:800}.v29-btn:hover{background:#78e7ff18}.v29-close{background:transparent;border:0;color:#9fb0c2;font-size:25px;cursor:pointer}.v29-hint{font-size:10px;color:#8193a8;margin-top:12px}@media(max-width:600px){.v29-box{padding:20px}.v29-box h2{font-size:25px}}
+#v29-open{position:fixed;right:18px;top:186px;z-index:10000;border:1px solid #78e7ff38;background:#06101dcc;color:#dffaff;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-size:10px;font-weight:900;letter-spacing:.08em}
+@media(max-width:700px){#v29-open{top:auto;bottom:112px;right:18px}}
+</style>
+<div id="v29-tour" aria-hidden="true"><div class="v29-box">
+<div class="v29-head"><div><div class="v29-k">V29 · GUIDED EXPERIENCE</div><h2>✨ Portfolio Tour</h2><div class="v29-sub">A short guided route through the most important parts of Alekhya's 3D portfolio.</div></div><button class="v29-close" id="v29-close">×</button></div>
+<div class="v29-progress"><i id="v29-fill"></i></div><div class="v29-stage"><div class="num" id="v29-num"></div><h3 id="v29-title"></h3><p id="v29-desc"></p><div class="v29-tags" id="v29-tags"></div></div>
+<div class="v29-actions"><button class="v29-btn" id="v29-prev">← Previous</button><button class="v29-btn" id="v29-next">Next →</button><button class="v29-btn" id="v29-open-section">Open Section</button><button class="v29-btn" id="v29-auto">▶ Auto Tour</button></div><div class="v29-hint">Press <b>T</b> anytime. Auto Tour advances every 4 seconds.</div>
+</div></div><button id="v29-open">✦ GUIDED TOUR</button>
+<script id="v29-script">(()=>{
+const panel=document.getElementById('v29-tour'),close=document.getElementById('v29-close'),fill=document.getElementById('v29-fill'),num=document.getElementById('v29-num'),title=document.getElementById('v29-title'),desc=document.getElementById('v29-desc'),tags=document.getElementById('v29-tags'),prev=document.getElementById('v29-prev'),next=document.getElementById('v29-next'),openSec=document.getElementById('v29-open-section'),auto=document.getElementById('v29-auto');
+const stops=[
+['WELCOME','Welcome','Start here for a quick introduction to P. Alekhya and the interactive portfolio world.',['CSE Graduate','3D Portfolio']],
+['ABOUT','About Me','Computer Science and Engineering graduate from Mohan Babu University, Tirupati, seeking entry-level software or Python development opportunities.',['B.Tech CSE','CGPA 8.91/10']],
+['SKILLS','Technical Skills','Explore the technical foundation represented in the portfolio: Python, Java, SQL, HTML, CSS, REST APIs, Git/GitHub and core CS concepts.',['Python','Java','SQL','REST APIs']],
+['PROJECTS','Projects','See the Credit Card Processing System and Weather Prediction App, including their workflows, technologies and concepts.',['Credit Card Processing','Weather App']],
+['CERTIFICATIONS','Credentials','Open the certificate vault to view the supplied certificates and internship credentials.',['Python','Data','Power BI','Internships']],
+['CONTACT','Connect','Use the contact hub, GitHub, email and resume shortcuts to continue from the portfolio.',['Email','GitHub','Resume']]
+];let i=0,timer=null;
+function render(){const x=stops[i];num.textContent=(i+1)+' / '+stops.length+' · '+x[0];title.textContent=x[1];desc.textContent=x[2];tags.innerHTML=x[3].map(a=>'<span class="v29-tag">'+a+'</span>').join('');fill.style.width=((i+1)/stops.length*100)+'%';}
+function show(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');render()}
+function hide(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');stopAuto()}
+function go(n){i=(n+stops.length)%stops.length;render()}
+function openCurrent(){const key=stops[i][0].toLowerCase();const b=document.querySelector('.dest[data-dest="'+key+'"]');if(b)b.click();}
+function stopAuto(){if(timer){clearInterval(timer);timer=null}auto.textContent='▶ Auto Tour'}
+function startAuto(){if(timer){stopAuto();return}auto.textContent='■ Stop Tour';timer=setInterval(()=>{if(!panel.classList.contains('open'))return;go(i+1)},4000)}
+document.getElementById('v29-open').onclick=show;close.onclick=hide;prev.onclick=()=>go(i-1);next.onclick=()=>go(i+1);openSec.onclick=openCurrent;auto.onclick=startAuto;panel.onclick=e=>{if(e.target===panel)hide()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='t'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){if(panel.classList.contains('open'))hide();else show()}if(e.key==='Escape')hide()});
+})();</script>
+<style id="v30-style">
+#v30-open{position:fixed;right:18px;top:218px;z-index:10000;border:1px solid #b98cff55;background:#0b0718dd;color:#f2eaff;border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(10px);font-size:10px;font-weight:900;letter-spacing:.08em}
+#v30-panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(1,4,12,.84);backdrop-filter:blur(14px);z-index:100020;color:#fff;font-family:Inter,system-ui,sans-serif;padding:16px}
+#v30-panel.open{display:flex}.v30-box{width:min(760px,95vw);max-height:90vh;overflow:auto;padding:26px;border:1px solid #b98cff44;border-radius:24px;background:linear-gradient(145deg,#0b1020f8,#180c28f5);box-shadow:0 30px 100px #000b,0 0 70px #a86cff12}.v30-head{display:flex;justify-content:space-between;gap:15px}.v30-k{font-size:10px;letter-spacing:.22em;color:#d0a6ff;font-weight:900}.v30-box h2{margin:7px 0;font-size:30px}.v30-sub{font-size:12px;color:#aebdd0;line-height:1.6}.v30-close{background:transparent;border:0;color:#aab7c8;font-size:26px;cursor:pointer}.v30-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}.v30-card{padding:16px;border:1px solid #ffffff12;border-radius:16px;background:#ffffff06}.v30-card h3{margin:0 0 8px;font-size:14px}.v30-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #ffffff0d;font-size:11px}.v30-row:last-child{border-bottom:0}.v30-btn{border:1px solid #b98cff44;background:#b98cff0d;color:#fff;border-radius:10px;padding:8px 11px;cursor:pointer;font-size:11px;font-weight:800}.v30-btn.on{background:#b98cff24;border-color:#d1aaff88}.v30-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.v30-note{margin-top:14px;padding:12px;border-radius:12px;background:#ffffff05;color:#91a3b8;font-size:10px;line-height:1.5}.v30-large{font-size:1.12em!important}.v30-contrast{filter:contrast(1.18)}.v30-focus *:focus{outline:2px solid #d5a9ff!important;outline-offset:3px!important}
+@media(max-width:700px){#v30-open{top:auto;bottom:150px;right:18px}.v30-grid{grid-template-columns:1fr}.v30-box{padding:20px}.v30-box h2{font-size:25px}}
+</style>
+<button id="v30-open" aria-label="Open accessibility center">◈ ACCESSIBILITY</button>
+<div id="v30-panel" aria-hidden="true"><div class="v30-box">
+<div class="v30-head"><div><div class="v30-k">V30 · ACCESSIBILITY CENTER</div><h2>Make the World Easier to Explore</h2><div class="v30-sub">Personalize readability, motion and interaction settings. Your choices are saved in this browser.</div></div><button class="v30-close" id="v30-close">×</button></div>
+<div class="v30-grid">
+<div class="v30-card"><h3>👁️ Visual</h3>
+<div class="v30-row"><span>Larger text</span><button class="v30-btn" id="v30-text">OFF</button></div>
+<div class="v30-row"><span>Higher contrast</span><button class="v30-btn" id="v30-contrast">OFF</button></div>
+<div class="v30-row"><span>Focus outlines</span><button class="v30-btn" id="v30-focus">OFF</button></div>
+</div>
+<div class="v30-card"><h3>🎞️ Motion</h3>
+<div class="v30-row"><span>Reduced motion</span><button class="v30-btn" id="v30-motion">OFF</button></div>
+<div class="v30-row"><span>Keyboard help</span><button class="v30-btn" id="v30-keys">SHOW</button></div>
+<div class="v30-row"><span>Reset settings</span><button class="v30-btn" id="v30-reset">RESET</button></div>
+</div></div>
+<div class="v30-actions"><button class="v30-btn" id="v30-save">✓ Settings saved automatically</button></div>
+<div class="v30-note">Shortcut: press <b>E</b> to open/close Accessibility Center. These settings affect this portfolio in your current browser only.</div>
+</div></div>
+<script id="v30-script">(()=>{
+const panel=document.getElementById('v30-panel');
+const btns={text:document.getElementById('v30-text'),contrast:document.getElementById('v30-contrast'),focus:document.getElementById('v30-focus'),motion:document.getElementById('v30-motion')};
+const state=JSON.parse(localStorage.getItem('ale_v30_access')||'{}');
+function setClass(k,on){document.documentElement.classList.toggle('v30-'+k,on);localStorage.setItem('ale_v30_access',JSON.stringify({text:document.documentElement.classList.contains('v30-text'),contrast:document.documentElement.classList.contains('v30-contrast'),focus:document.documentElement.classList.contains('v30-focus'),motion:document.documentElement.classList.contains('v30-motion')}));update()}
+function update(){for(const k of Object.keys(btns)){const on=document.documentElement.classList.contains('v30-'+k);btns[k].textContent=on?'ON':'OFF';btns[k].classList.toggle('on',on)}}
+Object.keys(btns).forEach(k=>document.documentElement.classList.toggle('v30-'+k,!!state[k]));update();
+function open(){panel.classList.add('open');panel.setAttribute('aria-hidden','false')};function close(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true')}
+document.getElementById('v30-open').onclick=open;document.getElementById('v30-close').onclick=close;panel.onclick=e=>{if(e.target===panel)close()};
+btns.text.onclick=()=>setClass('text',!document.documentElement.classList.contains('v30-text'));btns.contrast.onclick=()=>setClass('contrast',!document.documentElement.classList.contains('v30-contrast'));btns.focus.onclick=()=>setClass('focus',!document.documentElement.classList.contains('v30-focus'));btns.motion.onclick=()=>{const on=!document.documentElement.classList.contains('v30-motion');setClass('motion',on);document.documentElement.classList.toggle('reduce-motion',on)};
+document.getElementById('v30-keys').onclick=()=>{alert('Shortcuts: T Tour · R Recruiter · D Dashboard · L Projects · Y Certificates · I Interview · K Skills · J Career Journey · G Career Launch Pad · H Contact · A Analytics · P Print · V Visual Mode · E Accessibility · Esc Close')};
+document.getElementById('v30-reset').onclick=()=>{localStorage.removeItem('ale_v30_access');['text','contrast','focus','motion'].forEach(k=>document.documentElement.classList.remove('v30-'+k));document.documentElement.classList.remove('reduce-motion');update()};
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='e'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){panel.classList.contains('open')?close():open()}if(e.key==='Escape')close()});
+})();</script>
+
+
+<style id="v31-health-css">#v31-panel{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:#02050be8;backdrop-filter:blur(14px);padding:18px}#v31-panel.open{display:grid}.v31-box{width:min(760px,96vw);max-height:86vh;overflow:auto;background:#07111e;border:1px solid #8be8ff35;border-radius:24px;padding:22px;box-shadow:0 30px 100px #000b}.v31-head{display:flex;justify-content:space-between;align-items:center}.v31-title{font-size:clamp(24px,5vw,42px);font-weight:900}.v31-sub{color:#9fb1c7;font-size:12px;margin-top:5px}.v31-close{width:38px;height:38px;border-radius:50%;border:1px solid #ffffff25;background:#ffffff09;color:#fff;font-size:20px;cursor:pointer}.v31-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:18px}.v31-item{border:1px solid #ffffff15;background:#ffffff06;border-radius:16px;padding:14px}.v31-item b{display:block;font-size:12px;margin-bottom:7px}.v31-status{font-size:11px;color:#9fb1c7}.v31-ok{color:#78f5bd}.v31-warn{color:#ffd37a}.v31-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.v31-btn{padding:9px 13px;border-radius:999px;border:1px solid #8be8ff35;background:#ffffff09;color:#fff;cursor:pointer}.v31-bar{height:7px;border-radius:999px;background:#ffffff0b;overflow:hidden;margin-top:12px}.v31-fill{height:100%;width:0;background:#78eaff;transition:width .4s}.v31-note{font-size:10px;color:#8192a8;margin-top:12px}</style>
+
+<div id="v31-panel"><div class="v31-box"><div class="v31-head"><div><div class="v31-sub">V31 PORTFOLIO DIAGNOSTICS</div><div class="v31-title">World Health Check</div><div class="v31-sub">Quickly verify the portfolio assets before sharing it.</div></div><button class="v31-close" id="v31-close">×</button></div><div class="v31-bar"><div class="v31-fill" id="v31-fill"></div></div><div class="v31-grid" id="v31-grid"></div><div class="v31-actions"><button class="v31-btn" id="v31-run">Run Check</button><button class="v31-btn" id="v31-copy">Copy Report</button><button class="v31-btn" id="v31-share">Share Portfolio</button></div><div class="v31-note">Press <b>X</b> to open. Checks run locally in your browser; no data is uploaded.</div></div></div>
+<script id="v31-script">(()=>{const panel=document.getElementById('v31-panel'),grid=document.getElementById('v31-grid'),fill=document.getElementById('v31-fill');const assets=[['Portfolio page','index.html'],['Resume','assets/Alekhya_Resume_Updated_8_91.docx'],['Profile image','assets/profile.jpg'],['Python certificate','assets/practical-python.jpg'],['Data Analysis certificate','assets/data-analysis-python.jpg'],['Power BI certificate','assets/power-bi.jpg'],['Python internship certificate','assets/python-internship.jpg']];let last=[];function show(){panel.classList.add('open');run()}function hide(){panel.classList.remove('open')}function test(url){return fetch(url,{method:'HEAD',cache:'no-store'}).then(r=>r.ok).catch(()=>false)}async function run(){grid.innerHTML='';last=[];fill.style.width='5%';for(let i=0;i<assets.length;i++){const [name,url]=assets[i];const ok=await test(url);last.push({name,url,ok});const d=document.createElement('div');d.className='v31-item';d.innerHTML='<b>'+name+'</b><div class="v31-status '+(ok?'v31-ok':'v31-warn')+'">'+(ok?'✓ Available':'! Check file')+'</div><div class="v31-status">'+url+'</div>';grid.appendChild(d);fill.style.width=Math.round(((i+1)/assets.length)*100)+'%'}}document.getElementById('v31-run').onclick=run;document.getElementById('v31-copy').onclick=async()=>{const t='Alekhya Portfolio Health Check\n'+last.map(x=>(x.ok?'OK':'CHECK')+' — '+x.name+' — '+x.url).join('\n');try{await navigator.clipboard.writeText(t);alert('Report copied.')}catch(e){alert(t)}};document.getElementById('v31-share').onclick=async()=>{const data={title:'P. Alekhya — 3D Portfolio',text:'Explore my interactive 3D portfolio.',url:location.href};if(navigator.share){try{await navigator.share(data)}catch(e){}}else{try{await navigator.clipboard.writeText(location.href);alert('Portfolio link copied.')}catch(e){alert(location.href)}}};document.getElementById('v31-close').onclick=hide;panel.onclick=e=>{if(e.target===panel)hide()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='x'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){panel.classList.contains('open')?hide():show()}if(e.key==='Escape')hide()})})();</script>
+<style id="v32-share-css">#v32-panel{position:fixed;inset:0;z-index:101;display:none;place-items:center;background:#02050be8;backdrop-filter:blur(16px);padding:18px}#v32-panel.open{display:grid}.v32-box{width:min(720px,96vw);max-height:88vh;overflow:auto;background:#07111e;border:1px solid #8be8ff35;border-radius:26px;padding:24px;box-shadow:0 30px 100px #000b}.v32-head{display:flex;justify-content:space-between;align-items:center}.v32-title{font-size:clamp(26px,5vw,44px);font-weight:900}.v32-sub{color:#9fb1c7;font-size:12px;margin-top:5px}.v32-close{width:38px;height:38px;border-radius:50%;border:1px solid #ffffff25;background:#ffffff09;color:#fff;font-size:20px;cursor:pointer}.v32-card{margin-top:20px;border:1px solid #8be8ff30;border-radius:22px;padding:22px;background:linear-gradient(135deg,#0b1b2d,#07111e);position:relative;overflow:hidden}.v32-card:after{content:'AP';position:absolute;right:-18px;top:-32px;font-size:150px;font-weight:1000;color:#8be8ff08}.v32-name{font-size:30px;font-weight:900}.v32-role{color:#78eaff;margin-top:4px}.v32-line{height:1px;background:#ffffff12;margin:16px 0}.v32-tags{display:flex;flex-wrap:wrap;gap:7px}.v32-tag{font-size:11px;padding:6px 9px;border-radius:999px;background:#ffffff09;border:1px solid #ffffff14}.v32-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.v32-btn{padding:10px 14px;border-radius:999px;border:1px solid #8be8ff35;background:#ffffff09;color:#fff;cursor:pointer}.v32-note{font-size:10px;color:#8192a8;margin-top:13px}</style><div id="v32-panel"><div class="v32-box"><div class="v32-head"><div><div class="v32-sub">V32 SHARE STATION</div><div class="v32-title">Recruiter Share Card</div><div class="v32-sub">A compact profile card you can copy or print.</div></div><button class="v32-close" id="v32-close">×</button></div><div class="v32-card" id="v32-card"><div class="v32-name">P. ALEKHYA</div><div class="v32-role">Computer Science & Engineering · Python Developer</div><div class="v32-line"></div><div><b>Education</b><div class="v32-sub">B.Tech CSE · Mohan Babu University · 2022–2026 · CGPA 8.91/10</div></div><div class="v32-line"></div><div><b>Skills</b><div class="v32-tags"><span class="v32-tag">Python</span><span class="v32-tag">Java</span><span class="v32-tag">SQL</span><span class="v32-tag">HTML/CSS</span><span class="v32-tag">REST APIs</span><span class="v32-tag">Git/GitHub</span></div></div><div class="v32-line"></div><div><b>Projects</b><div class="v32-sub">Credit Card Processing System · Weather Prediction App</div></div></div><div class="v32-actions"><button class="v32-btn" id="v32-copy">Copy Profile</button><button class="v32-btn" id="v32-print">Print Card</button><button class="v32-btn" id="v32-share">Share</button></div><div class="v32-note">Press <b>S</b> to open Share Station.</div></div></div><script id="v32-script">(()=>{const panel=document.getElementById('v32-panel');const close=()=>panel.classList.remove('open');const show=()=>panel.classList.add('open');const profile='P. ALEKHYA — Computer Science & Engineering | Python Developer\nB.Tech CSE, Mohan Babu University, 2022–2026 | CGPA 8.91/10\nSkills: Python, Java, SQL, HTML/CSS, REST APIs, Git/GitHub\nProjects: Credit Card Processing System; Weather Prediction App';document.getElementById('v32-close').onclick=close;document.getElementById('v32-copy').onclick=async()=>{try{await navigator.clipboard.writeText(profile);alert('Profile copied.')}catch(e){alert(profile)}};document.getElementById('v32-print').onclick=()=>{const w=window.open('','_blank','width=760,height=760');if(!w)return;w.document.write('<!doctype html><html><head><title>Alekhya Profile</title><style>body{font-family:Arial;padding:40px}h1{margin-bottom:4px}p{line-height:1.6}.tag{display:inline-block;border:1px solid #aaa;border-radius:20px;padding:7px 10px;margin:4px}</style></head><body><h1>P. ALEKHYA</h1><p><b>Computer Science & Engineering · Python Developer</b></p><p>B.Tech CSE, Mohan Babu University · 2022–2026 · CGPA 8.91/10</p><p><b>Skills</b></p><div><span class="tag">Python</span><span class="tag">Java</span><span class="tag">SQL</span><span class="tag">HTML/CSS</span><span class="tag">REST APIs</span><span class="tag">Git/GitHub</span></div><p><b>Projects</b><br>Credit Card Processing System<br>Weather Prediction App</p></body></html>');w.document.close();w.focus();w.print()};document.getElementById('v32-share').onclick=async()=>{if(navigator.share){try{await navigator.share({title:'P. Alekhya — 3D Portfolio',text:profile,url:location.href})}catch(e){}}else{try{await navigator.clipboard.writeText(location.href);alert('Portfolio link copied.')}catch(e){alert(location.href)}}};panel.onclick=e=>{if(e.target===panel)close()};addEventListener('keydown',e=>{if(e.key.toLowerCase()==='s'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){panel.classList.contains('open')?close():show()}if(e.key==='Escape')close()})})();</script></body></html>
